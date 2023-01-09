@@ -1,0 +1,30 @@
+{
+  "comment0": "测试用的私钥，从这个文件输入，而不是输出",
+  "comment1": "需要换私钥就改这个文件，不要把你自己的私钥提交到git",
+  "comment2": "namedkeys是命名私钥，他指向下面的私钥 HardhatRuntimeEnvironment.getNamedAccounts()",
+  "namedkeys": {
+    "deployer": 0,
+    "account1": 1,
+    "account2": 2,
+    "account3": 3,
+    "account4": 4,
+    "account5": 5,
+    "account6": 6,
+    "account7": 7,
+    "account8": 8,
+    "account9": 9
+  },
+  "comment3": "这里提供了10个私钥ethers.getSigners()可以得到他们对应的钱包",
+  "prikeys": [
+    "0xb8faa392ff0cb04a9a623bcc521c4e2184882889aa69899f9bd12f7d1b185cea",
+    "0x83f290782ba4e995a4c934f45799a956a0ce2a9d9703a3715472727dc6c85d44",
+    "0xb1a82552591c92f41e7d3b5bcfa346f10815fb8b9e709e4fb63345705d45cc65",
+    "0xbf8e1aba5d203125344787a1a202e7ac8ca9de663899995577de696830ef5f47",
+    "0xe5fd98fc34008d6dd917bc89ecf108d9cc1ac2bf9d1dbe5fa48b0ac5353c47f9",
+    "0x1ac8b4cb9d518fbba314cfea5655bb29bd878a20c4c07644d3ff619aee2af759",
+    "0x4347ef26db62faa1a303148ce7e41ac08d342c139561d0d46de73f26c03dffab",
+    "0xe92d47210ea0ca01ace5e55dad2d5f0b97de382e53bd5f6e2ba32de220562296",
+    "0x3e42a3dff4e842ab8d6b5a95dd9244b48eb840f71314f13dab2fb3bdd82fc95b",
+    "0x2eda6ae7ba190d04bd3c155388f9f233539d6b463ba38d3aad92464b07c96528"
+  ]
+}

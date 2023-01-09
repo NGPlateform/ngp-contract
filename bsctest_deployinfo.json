@@ -1,0 +1,167 @@
+{
+  "groups": [
+    {
+      "group": "Pool",
+      "contracts": [
+        {
+          "name": "LendWallet",
+          "deployer": "deployer",
+          "args": ["0x5E8b4aE792567c22A6F471AE09082D588C3f2EaF"],
+          "verify": "contracts/LendWallet.sol:LendWallet"
+        },
+        {
+          "name": "ProxyAdmin",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/ProxyAdmin.sol:ProxyAdmin"
+        },
+        {
+          "name": "Token",
+          "deployer": "deployer",
+          "args": ["usdt", "usdt"],
+          "verify": "contracts/Token.sol:Token"
+        },
+        {
+          "name": "BTC",
+          "deployer": "deployer",
+          "args": ["BTC", "BTC"],
+          "verify": "contracts/BTC.sol:BTC"
+        },
+        {
+          "name": "ETH",
+          "deployer": "deployer",
+          "args": ["ETH", "ETH"],
+          "verify": "contracts/ETH.sol:ETH"
+        },
+        {
+          "name": "Config",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/Config.sol:Config"
+        },
+        {
+          "name": "Ulab",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/Ulab.sol:Ulab"
+        },
+        {
+          "name": "PartnerContract",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/PartnerContract.sol:PartnerContract"
+        },
+        {
+          "name": "Pool",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/Pool.sol:Pool"
+        },
+        {
+          "name": "Util",
+          "deployer": "deployer",
+          "args": [
+            "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
+            "0xbBcC3059F8f038DdE620DCdb331D542352154E10"
+          ],
+          "verify": "contracts/Util.sol:Util"
+        },
+        {
+          "name": "Swap",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/Swap.sol:Swap"
+        },
+        {
+          "name": "LabToken",
+          "deployer": "deployer",
+          "args": ["LAB Token", "LAB"],
+          "verify": "contracts/LabToken.sol:LabToken"
+        },
+        {
+          "name": "BondSwap",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/BondSwap.sol:BondSwap"
+        },
+        {
+          "name": "Test",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/Test.sol:Test"
+        }
+      ]
+    },
+    {
+      "group": "proxy",
+      "contracts": [
+        {
+          "name": "UlabProxy",
+          "deployer": "deployer",
+          "args": [
+            "0x62D879874022A6118D0579680c6cAe3a4a8D534A",
+            "0x10cb38E57E3AfC3e672531Dfa5136eF71882e8a0",
+            "0xc4d66de8000000000000000000000000a9f0af88262e8282f13d9dd05925af844e02fb97"
+          ],
+          "verify": "contracts/UlabProxy.sol:UlabProxy"
+        },
+        {
+          "name": "ConfigProxy",
+          "deployer": "deployer",
+          "args": [
+            "0xF51fc4c5B68D49e7F63894fD8EF4d32B064C6291",
+            "0xb7cD3DC3b905E798Ef1395cFA841C2aBA3720CF4",
+            "0xc67a5abc00000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000014000000000000000000000000055d398326f99059ff775485246999027b3197955000000000000000000000000f28883fef4a8e62ab49b53cb6e73e7ab84e9e016000000000000000000000000469580c178702258dac9a36119ec391c21c4c49f000000000000000000000000eb2f5b0c1c215e38eafc2bdd4e7bd4f691f9b616000000000000000000000000000000000000000000000000000000000000000300000000000000000000000085352172458bbe34ba1fb015dd0be4fc29fe23e40000000000000000000000003302acd25aa84f1e2b5f5b7776aa0f9a6d895542000000000000000000000000e0f952f36fc24cbc21319701a19c89487237ff97000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c0000000000000000000000007130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c0000000000000000000000002170ed0880ac9a755fd29b2688956bd959f933f8000000000000000000000000a260e12d2b924cb899ae80bb58123ac3fee1e2f0000000000000000000000000ba2ae424d960c26247dd6c32edc70b295c744c430000000000000000000000004338665cbb7b2485a8855a139b75d5e34ab0db940000000000000000000000000d8ce2a99bb6e3b7db580ed848240e4a0f9ae1530000000000000000000000009f589e3eabe42ebc94a44727b3f3531c0c8778090000000000000000000000002c44b726adf1963ca47af88b284c06f30380fc78000000000000000000000000f8a0bf9cf54bb92f17374d9e9a321e6a111a51bd"
+          ],
+          "verify": "contracts/ConfigProxy.sol:ConfigProxy"
+        },
+        {
+          "name": "PartnerProxy",
+          "deployer": "deployer",
+          "args": [
+            "0xF73DCbc572871A7a84dace68bCfD7285865C1B04",
+            "0x10cb38E57E3AfC3e672531Dfa5136eF71882e8a0",
+            "0x8129fc1c"
+          ],
+          "verify": "contracts/PartnerProxy.sol:PartnerProxy"
+        },
+        {
+          "name": "BUSD",
+          "deployer": "deployer",
+          "args": ["BUSD", "BUSD"],
+          "verify": "contracts/BUSD.sol:BUSD"
+        },
+        {
+          "name": "PoolProxy",
+          "deployer": "deployer",
+          "args": [
+            "0xdEf3FA5ADEE345f95C147e6943e4030aeBb9371B",
+            "0x10cb38E57E3AfC3e672531Dfa5136eF71882e8a0",
+            "0x8129fc1c"
+          ],
+          "verify": "contracts/PoolProxy.sol:PoolProxy"
+        },
+        {
+          "name": "BondProxy",
+          "deployer": "deployer",
+          "args": [
+            "0x4EEe6D84d56266f4ec8A9E2811c2e840fA03B14f",
+            "0x10cb38E57E3AfC3e672531Dfa5136eF71882e8a0",
+            "0x8129fc1c"
+          ],
+          "verify": "contracts/BondProxy.sol:BondProxy"
+        },
+        {
+          "name": "SwapProxy",
+          "deployer": "deployer",
+          "args": [
+            "0xC3939F76b1E6cc61E19fC015855B5fA54b4f0c84",
+            "0x10cb38E57E3AfC3e672531Dfa5136eF71882e8a0",
+            "0x8129fc1c"
+          ],
+          "verify": "contracts/SwapProxy.sol:SwapProxy"
+        }
+      ]
+    }
+  ]
+}
