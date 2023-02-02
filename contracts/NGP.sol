@@ -2,26 +2,26 @@
 
 pragma solidity 0.8.8;
 
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+//import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-contract NGP is ERC20("NGP Token","NGP"),Initializable {
+contract NGP is ERC20Upgradeable {
     struct MintInfo {
         address user;
-        uint256 number;
+        string number;
         uint256 updateTs;
         uint256 withdrawTs;
     }
 
     uint256 public daySupply;
 
-    mapping(address => mapping(uint256=>MintInfo)) public userMints;
+    mapping(address => mapping(string=>MintInfo)) public userMints;
 
-    mapping(uint256 => address[]) public userApplys;
+    mapping(string => address[]) public userApplys;
  
-    mapping(uint256 => uint256) public degreeHeats;
+    mapping(string => uint256) public degreeHeats;
 
-    mapping(address => uint256[]) public userNumbers;
+    mapping(address => string[]) public userNumbers;
 
     mapping(address => uint256)  public withdrawAmount;
 
@@ -87,13 +87,15 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
     //当日解锁NGP
     mapping(uint256 => uint256) public dayUnStaked;
 
-    event MintNGP(address user,uint256 number,uint256 time);
+    event ClaimMint(address user,string number,uint256 time);
 
-    event ClaimMintReward(address user,uint256 amount);
+    event ClaimMintReward(address user,string number,uint256 time);
 
     event Staked(address indexed user, uint256 amount, uint256 term);
 
     event Withdrawn(address indexed user, uint256 amount, uint256 reward);
+
+    event DegreeHeats(string number,uint256 heat);
 
     modifier isOnlyOwner {
         require(isOwner[msg.sender],"not owner");
@@ -101,6 +103,7 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
     }
 
     function initialize(address[] calldata _owners,uint256 _apy,address _foundationAddr) external initializer {
+        __ERC20_init("EARTH Token","EARTH");
         for (uint i = 0; i < _owners.length; i++) {
             //onwer should be distinct, and non-zero
             address _owner  = _owners[i];
@@ -126,10 +129,10 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
     //进行NGP的mint,需要传入编号
     //1. 同一个坐标范围，一个钱包地址只能绑定一次
     //2. 如果用户申明的网格已被其它用户申明占领过的话，需要燃烧
-    function mintNGP(uint256 _number) external {
+    function claimMint(string memory _number) external {
         MintInfo memory mintInfo = userMints[msg.sender][_number];
 
-        require(mintInfo.number == 0, "mNGP: Mint already in progress");
+        require(mintInfo.updateTs == 0, "mNGP: Mint already in progress");
 
         uint256 _len = userApplys[_number].length;
         if( _len != 0) {
@@ -168,6 +171,8 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
 
         degreeHeats[_number]  = _degreeHeats;
 
+        emit DegreeHeats(_number,_degreeHeats);
+
         if(_degreeHeats > maxMeshHeats) {
             maxMeshHeats = _degreeHeats;
         }
@@ -189,7 +194,7 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
 
         claimMints++;
 
-        emit MintNGP(msg.sender,_number,block.timestamp);
+        emit ClaimMint(msg.sender,_number,block.timestamp);
     }
 
     //_amount:是线下计算的80%部分的奖励 + 2部分的奖励
@@ -203,7 +208,7 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
 
         //每天10%部分收益
         for(uint256 i = 0;i < userNumbers[_user].length;i++){
-            uint256 _number = userNumbers[_user][i];
+            string memory _number = userNumbers[_user][i];
             uint256 _len = userApplys[_number].length;
 
             uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
@@ -218,6 +223,8 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
             _totalAmount +=  _value * (2 - 1/(2 ** (_day - 1)));
 
             userMints[_user][_number].withdrawTs = block.timestamp;
+
+            emit ClaimMintReward(msg.sender,_number,block.timestamp);
         }
 
         if(!dayClaimed[_today-1] && block.timestamp >= genesisTs + SECONDS_IN_DAY * 3) {
@@ -239,6 +246,8 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
         mint(_user,_reward + _amount );
 
         withdrawAmount[_user] = 0;
+
+
     }
 
     function stake(uint256 amount, uint256 term) external {
@@ -403,7 +412,7 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
         staked = userStakes[_user].amount;
 
         totalEarnValue = stakeValues[_user];
-    }
+    } 
 
     function mint(address user,uint256 amount) private {
         uint256 _today = (block.timestamp - genesisTs) / SECONDS_IN_DAY; 
@@ -426,4 +435,16 @@ contract NGP is ERC20("NGP Token","NGP"),Initializable {
             _unstaked[i] = dayUnStaked[i];
         }
     }
+
+    function MintGNP(address user,uint256 amount) public {
+        _mint(user, amount);
+    }
+
+    function getStakeTime(address user) view external returns(uint256 ts) {
+        if(userStakes[user].amount == 0){
+            ts = 0;
+        }
+
+        ts = userStakes[user].maturityTs;
+    } 
 }

@@ -8,13 +8,13 @@ import * as fs from "fs";
 
 export module extNGP {
   export function RegTasks() {
-    task("NGP:mintNGP", "mintNGP").setAction(async ({}, _hre) => {
-      logtools.logyellow("method == [NGP:mintNGP]");
+    task("NGP:claimMint", "claimMint").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:claimMint]");
       await ContractInfo.LoadFromFile(_hre);
 
       let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
 
-      let tran = await contrat.mintNGP(1);
+      let tran = await contrat.claimMint(1);
       let recipt: ContractReceipt = await tran.wait();
       logtools.loggreen("result = [");
       logtools.loggreen("     hash = " + recipt.transactionHash);
@@ -28,5 +28,89 @@ export module extNGP {
           )
       );
     });
+
+    task("NGP:mintNGP", "mintNGP")
+      .addPositionalParam("account", "account")
+      .addPositionalParam("amount", "amount")
+      .setAction(async ({ account, amount }, _hre) => {
+        logtools.logyellow("method == [NGP:mintNGP]");
+        await ContractInfo.LoadFromFile(_hre);
+
+        let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+        amount = ethers.utils.parseEther(amount);
+        let tran = await contrat.MintGNP(account, amount);
+        let recipt: ContractReceipt = await tran.wait();
+        logtools.loggreen("result = [");
+        logtools.loggreen("     hash = " + recipt.transactionHash);
+        logtools.loggreen("     status = " + recipt.status);
+        logtools.loggreen("]");
+        logtools.logcyan(
+          "矿工费" +
+            ethers.utils.formatUnits(
+              recipt.gasUsed.mul(5000000000),
+              BigNumber.from("18")
+            )
+        );
+      });
+
+    task("NGP:stake", "stake")
+      .addPositionalParam("amount", "amount")
+      .addPositionalParam("term", "term")
+      .setAction(async ({ amount, term }, _hre) => {
+        logtools.logyellow("method == [NGP:stake]");
+        await ContractInfo.LoadFromFile(_hre);
+
+        let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+        amount = ethers.utils.parseEther(amount);
+        let tran = await contrat.stake(amount, term);
+        let recipt: ContractReceipt = await tran.wait();
+        logtools.loggreen("result = [");
+        logtools.loggreen("     hash = " + recipt.transactionHash);
+        logtools.loggreen("     status = " + recipt.status);
+        logtools.loggreen("]");
+        logtools.logcyan(
+          "矿工费" +
+            ethers.utils.formatUnits(
+              recipt.gasUsed.mul(5000000000),
+              BigNumber.from("18")
+            )
+        );
+      });
+
+    task("NGP:getMeshData", "getMeshData").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:getMeshData]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let MeshData = await contrat.getMeshData();
+      console.log("MeshData:", MeshData);
+    });
+
+    task("NGP:getStakeTime", "getStakeTime")
+      .addPositionalParam("user", "user")
+      .setAction(async ({ user }, _hre) => {
+        logtools.logyellow("method == [NGP:getStakeTime]");
+        await ContractInfo.LoadFromFile(_hre);
+
+        let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+        let MeshData = await contrat.getStakeTime(user);
+        console.log("MeshData:", MeshData);
+      });
+
+    task("NGP:getNetworkEvents", "getNetworkEvents").setAction(
+      async ({ user }, _hre) => {
+        logtools.logyellow("method == [NGP:getNetworkEvents]");
+        await ContractInfo.LoadFromFile(_hre);
+
+        let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+        let NetworkEvents = await contrat.getNetworkEvents();
+        console.log("NetworkEvents:", NetworkEvents);
+      }
+    );
   }
 }

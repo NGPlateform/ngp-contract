@@ -91,6 +91,14 @@ const config: HardhatConfig = {
       saveDeployments: true,
       tags: ["staging"],
     },
+    goerli: {
+      url: "https://endpoints.omniatech.io/v1/eth/goerli/public",
+      accounts: onlykeys,
+      chainId: 5,
+      live: true,
+      saveDeployments: true,
+      tags: ["staging"],
+    },
     local: {
       url: "http://127.0.0.1:8545/",
       accounts: onlykeys,
