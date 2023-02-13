@@ -2,7 +2,6 @@ import { BigNumber, ContractReceipt, ethers } from "ethers";
 import { ContractInfo } from "../utils/util_contractinfo";
 import { logtools } from "../utils/util_log";
 import { task } from "hardhat/config";
-import Web3 from "web3";
 import "@nomiclabs/hardhat-etherscan";
 import * as fs from "fs";
 
