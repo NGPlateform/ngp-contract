@@ -1,0 +1,94 @@
+{
+  "address": "0x288E448C6f9A012F248645F4258B280E52236B8A",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "message",
+          "type": "bytes32"
+        }
+      ],
+      "name": "hashMessage",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "messageHash",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "messageHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "v",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "r",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "verifyEcrecover",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "recoveredAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x2c6ef01da71393308e43afe4c50b35b1f53214f5d92a9992c616adf1ee9e07b4",
+  "receipt": {
+    "to": null,
+    "from": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
+    "contractAddress": "0x288E448C6f9A012F248645F4258B280E52236B8A",
+    "transactionIndex": 0,
+    "gasUsed": "158623",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x4bb0ce0fcabac8ae8c357aefe8b8b2591c2dcc27feec9ed4cf66516df3b0c92d",
+    "transactionHash": "0x2c6ef01da71393308e43afe4c50b35b1f53214f5d92a9992c616adf1ee9e07b4",
+    "logs": [],
+    "blockNumber": 1,
+    "cumulativeGasUsed": "158623",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "8f340de46a8b36a7cbabdb0ef9525395",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.8+commit.dddeac2f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"message\",\"type\":\"bytes32\"}],\"name\":\"hashMessage\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"messageHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"messageHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"verifyEcrecover\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"recoveredAddress\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/sign.sol\":\"SIGN\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/sign.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\n\\npragma solidity 0.8.8;\\n\\ncontract SIGN {\\n    function hashMessage(bytes32  message) public view returns (bytes32 messageHash) {\\n    messageHash = keccak256(abi.encodePacked(\\\"\\\\x19Ethereum Signed Message:\\\\n32\\\", message));\\n    return messageHash;\\n  }\\n\\n  function verifyEcrecover(bytes32  messageHash, uint8 v, bytes32 r, bytes32 s) public view returns (address recoveredAddress) {\\n    bytes32 hash = hashMessage(messageHash);\\n    return  ecrecover(hash, v, r, s);\\n  }\\n}\",\"keccak256\":\"0x961035a3382c2ee20fc4aa4c735049eb786d59034d58f7d4cc7062b870e08279\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506101e8806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806365865bc11461003b578063b3cb890f1461006b575b600080fd5b61004e610049366004610156565b61008c565b6040516001600160a01b0390911681526020015b60405180910390f35b61007e610079366004610199565b610103565b604051908152602001610062565b60008061009886610103565b60408051600081526020810180835283905260ff881691810191909152606081018690526080810185905290915060019060a0016020604051602081039080840390855afa1580156100ee573d6000803e3d6000fd5b5050604051601f190151979650505050505050565b6040517f19457468657265756d205369676e6564204d6573736167653a0a3332000000006020820152603c8101829052600090605c01604051602081830303815290604052805190602001209050919050565b6000806000806080858703121561016c57600080fd5b84359350602085013560ff8116811461018457600080fd5b93969395505050506040820135916060013590565b6000602082840312156101ab57600080fd5b503591905056fea26469706673582212204fe328e36ee3cb398fcbb9300bccdf1d2f28d1c1bb8bce0525850e86cea1391464736f6c63430008080033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c806365865bc11461003b578063b3cb890f1461006b575b600080fd5b61004e610049366004610156565b61008c565b6040516001600160a01b0390911681526020015b60405180910390f35b61007e610079366004610199565b610103565b604051908152602001610062565b60008061009886610103565b60408051600081526020810180835283905260ff881691810191909152606081018690526080810185905290915060019060a0016020604051602081039080840390855afa1580156100ee573d6000803e3d6000fd5b5050604051601f190151979650505050505050565b6040517f19457468657265756d205369676e6564204d6573736167653a0a3332000000006020820152603c8101829052600090605c01604051602081830303815290604052805190602001209050919050565b6000806000806080858703121561016c57600080fd5b84359350602085013560ff8116811461018457600080fd5b93969395505050506040820135916060013590565b6000602082840312156101ab57600080fd5b503591905056fea26469706673582212204fe328e36ee3cb398fcbb9300bccdf1d2f28d1c1bb8bce0525850e86cea1391464736f6c63430008080033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}

@@ -168,7 +168,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x5fEfb39aB71C19DfD6fFD38fea50aEB9EE5D7bcb",
+   "addr": "0x7C02eec5e7A9220D8200D787A92E0C51490F8D3C",
    "abi": [
     {
      "anonymous": false,
@@ -258,6 +258,12 @@
        "indexed": false,
        "internalType": "uint256",
        "name": "heat",
+       "type": "uint256"
+      },
+      {
+       "indexed": false,
+       "internalType": "uint256",
+       "name": "len",
        "type": "uint256"
       }
      ],
@@ -1426,7 +1432,7 @@
     "event Approval(address indexed owner, address indexed spender, uint256 value)",
     "event ClaimMint(address user, string number, uint256 time)",
     "event ClaimMintReward(address user, string number, uint256 time)",
-    "event DegreeHeats(string number, uint256 heat)",
+    "event DegreeHeats(string number, uint256 heat, uint256 len)",
     "event Initialized(uint8 version)",
     "event Staked(address indexed user, uint256 amount, uint256 term)",
     "event Transfer(address indexed from, address indexed to, uint256 value)",

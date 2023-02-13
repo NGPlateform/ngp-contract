@@ -95,7 +95,7 @@ contract NGP is ERC20Upgradeable {
 
     event Withdrawn(address indexed user, uint256 amount, uint256 reward);
 
-    event DegreeHeats(string number,uint256 heat);
+    event DegreeHeats(string number,uint256 heat,uint256 len);
 
     modifier isOnlyOwner {
         require(isOwner[msg.sender],"not owner");
@@ -171,7 +171,7 @@ contract NGP is ERC20Upgradeable {
 
         degreeHeats[_number]  = _degreeHeats;
 
-        emit DegreeHeats(_number,_degreeHeats);
+        emit DegreeHeats(_number,_degreeHeats,_n);
 
         if(_degreeHeats > maxMeshHeats) {
             maxMeshHeats = _degreeHeats;
@@ -246,8 +246,6 @@ contract NGP is ERC20Upgradeable {
         mint(_user,_reward + _amount );
 
         withdrawAmount[_user] = 0;
-
-
     }
 
     function stake(uint256 amount, uint256 term) external {

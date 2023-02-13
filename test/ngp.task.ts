@@ -14,7 +14,7 @@ export module extNGP {
 
       let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
 
-      let tran = await contrat.claimMint(1);
+      let tran = await contrat.claimMint("E114332258");
       let recipt: ContractReceipt = await tran.wait();
       logtools.loggreen("result = [");
       logtools.loggreen("     hash = " + recipt.transactionHash);
@@ -79,6 +79,39 @@ export module extNGP {
         );
       });
 
+    task("NGP:claimMintReward", "claimMintReward").setAction(
+      async ({}, _hre) => {
+        logtools.logyellow("method == [NGP:claimMintReward]");
+        await ContractInfo.LoadFromFile(_hre);
+
+        const [owner, addr1] = await _hre.ethers.getSigners();
+
+        let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+        let private2 =
+          "0xb1a82552591c92f41e7d3b5bcfa346f10815fb8b9e709e4fb63345705d45cc62";
+
+        let resu1 = await Sign(owner.address, private1);
+
+        //claimMintReward(address _user,uint256 _amount,uint8[] memory vs, bytes32[] memory rs, bytes32[] memory ss)
+        let amount = ethers.utils.parseEther("1");
+        let tran = await contrat.claimMintReward(owner.address, amount);
+
+        let recipt: ContractReceipt = await tran.wait();
+        logtools.loggreen("result = [");
+        logtools.loggreen("     hash = " + recipt.transactionHash);
+        logtools.loggreen("     status = " + recipt.status);
+        logtools.loggreen("]");
+        logtools.logcyan(
+          "矿工费" +
+            ethers.utils.formatUnits(
+              recipt.gasUsed.mul(5000000000),
+              BigNumber.from("18")
+            )
+        );
+      }
+    );
+
     task("NGP:getMeshData", "getMeshData").setAction(async ({}, _hre) => {
       logtools.logyellow("method == [NGP:getMeshData]");
       await ContractInfo.LoadFromFile(_hre);
@@ -112,5 +145,36 @@ export module extNGP {
         console.log("NetworkEvents:", NetworkEvents);
       }
     );
+
+    async function Sign(sender, privateKey) {
+      let prefix = "\x19Ethereum Signed Message:\n32";
+
+      let signingKey = new ethers.utils.SigningKey(privateKey);
+
+      let newContract = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let spendNonce = await newContract.getSpendNonce();
+
+      let messageHash = ethers.utils.keccak256(
+        ethers.utils.solidityPack(
+          ["address", "uint256", "uint256"],
+          [sender, 5, spendNonce]
+        )
+      );
+
+      console.log("spendNonce:", spendNonce);
+
+      const msg = ethers.utils.keccak256(
+        ethers.utils.solidityPack(["string", "bytes32"], [prefix, messageHash])
+      );
+
+      let signature = await signingKey.signDigest(msg);
+
+      let { v, r, s } = signature;
+
+      v = v - 27;
+
+      return [v, r, s];
+    }
   }
 }

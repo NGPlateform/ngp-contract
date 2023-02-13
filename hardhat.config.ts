@@ -22,12 +22,14 @@ type HardhatConfig = HardhatUserConfig & ContractSizer;
 import { extTask } from "./hardhat.task";
 import { extFoundation } from "./test/foundation.task";
 import { extNGP } from "./test/ngp.task";
+import { Sign } from "./test/sign.task";
 
 console.log("config hardhat.");
 
 extTask.RegTasks();
 extFoundation.RegTasks();
 extNGP.RegTasks();
+Sign.RegTasks();
 
 // get prikeyts from a json file
 let buffer = fs.readFileSync("local_privkeys.json");

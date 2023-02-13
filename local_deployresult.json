@@ -2234,6 +2234,69 @@
     "function upgradeTo(address newImplementation)",
     "function upgradeToAndCall(address newImplementation, bytes data) payable"
    ]
+  },
+  "SIGN": {
+   "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
+   "addr": "0x288E448C6f9A012F248645F4258B280E52236B8A",
+   "abi": [
+    {
+     "inputs": [
+      {
+       "internalType": "bytes32",
+       "name": "message",
+       "type": "bytes32"
+      }
+     ],
+     "name": "hashMessage",
+     "outputs": [
+      {
+       "internalType": "bytes32",
+       "name": "messageHash",
+       "type": "bytes32"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "bytes32",
+       "name": "messageHash",
+       "type": "bytes32"
+      },
+      {
+       "internalType": "uint8",
+       "name": "v",
+       "type": "uint8"
+      },
+      {
+       "internalType": "bytes32",
+       "name": "r",
+       "type": "bytes32"
+      },
+      {
+       "internalType": "bytes32",
+       "name": "s",
+       "type": "bytes32"
+      }
+     ],
+     "name": "verifyEcrecover",
+     "outputs": [
+      {
+       "internalType": "address",
+       "name": "recoveredAddress",
+       "type": "address"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    }
+   ],
+   "func": [
+    "function hashMessage(bytes32 message) view returns (bytes32 messageHash)",
+    "function verifyEcrecover(bytes32 messageHash, uint8 v, bytes32 r, bytes32 s) view returns (address recoveredAddress)"
+   ]
   }
  }
 }

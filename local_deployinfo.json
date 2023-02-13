@@ -20,6 +20,12 @@
           "deployer": "deployer",
           "args": [],
           "verify": "contracts/Foundation.sol:Foundation"
+        },
+        {
+          "name": "SIGN",
+          "deployer": "deployer",
+          "args": [],
+          "verify": "contracts/sign.sol:SIGN"
         }
       ]
     },
