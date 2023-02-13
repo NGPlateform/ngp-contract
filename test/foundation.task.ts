@@ -20,26 +20,26 @@ export module extFoundation {
       logtools.logyellow("method == [Foundation:initialize]");
       await ContractInfo.LoadFromFile(_hre);
 
-      let contrat = await ContractInfo.getContract("Foundation");
-      logtools.logblue("Foundation = " + contrat.address);
+      // let contrat = await ContractInfo.getContract("Foundation");
+      // logtools.logblue("Foundation = " + contrat.address);
 
-      let ngpAddr = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+      // let ngpAddr = await ContractInfo.getContractProxy("NGP", "NGPProxy");
 
-      logtools.logblue("ngpAddr = " + ngpAddr.address);
+      // logtools.logblue("ngpAddr = " + ngpAddr.address);
 
-      let tran = await contrat.initialize(owners, required, ngpAddr.address);
-      let recipt: ContractReceipt = await tran.wait();
-      logtools.loggreen("result = [");
-      logtools.loggreen("     hash = " + recipt.transactionHash);
-      logtools.loggreen("     status = " + recipt.status);
-      logtools.loggreen("]");
-      logtools.logcyan(
-        "矿工费" +
-          ethers.utils.formatUnits(
-            recipt.gasUsed.mul(5000000000),
-            BigNumber.from("18")
-          )
-      );
+      // let tran = await contrat.initialize(owners, required, ngpAddr.address);
+      // let recipt: ContractReceipt = await tran.wait();
+      // logtools.loggreen("result = [");
+      // logtools.loggreen("     hash = " + recipt.transactionHash);
+      // logtools.loggreen("     status = " + recipt.status);
+      // logtools.loggreen("]");
+      // logtools.logcyan(
+      //   "矿工费" +
+      //     ethers.utils.formatUnits(
+      //       recipt.gasUsed.mul(5000000000),
+      //       BigNumber.from("18")
+      //     )
+      // );
     });
   }
 }

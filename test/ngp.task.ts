@@ -89,6 +89,27 @@ export module extNGP {
       console.log("MeshData:", MeshData);
     });
 
+    task("NGP:getMeshDashboard", "getMeshDashboard").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:getMeshDashboard]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let getMeshDashboard = await contrat.getMeshDashboard();
+      console.log("MeshData:", getMeshDashboard);
+    });
+
+    task("NGP:getEarthDashboard", "getEarthDashboard").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:getEarthDashboard]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let getEarthDashboard = await contrat.getEarthDashboard();
+      console.log("MeshData:", getEarthDashboard);
+    });
+    
+
     task("NGP:getStakeTime", "getStakeTime")
       .addPositionalParam("user", "user")
       .setAction(async ({ user }, _hre) => {

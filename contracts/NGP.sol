@@ -390,7 +390,7 @@ contract NGP is ERC20Upgradeable {
 
     function getEarthDashboard() view external returns (uint256 _totalSupply,uint256 liquidSupply,uint256 destruction,uint256 totalStaked,uint256 treasury,uint256 foundation) {
         _totalSupply = totalSupply();
-        liquidSupply = balanceOf(address(this));
+        liquidSupply = totalMinted - balanceOf(address(this));
         destruction = destructions;
         totalStaked = totalNGPStaked;
         treasury = treasuryValue;
