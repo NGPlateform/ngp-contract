@@ -168,7 +168,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0xC28e49988eB4a88DCCADfd6042bf3FE927c489E8",
+   "addr": "0xBc2DA1e788460ad9bbb9cED73E1Ac85f5C33Ae9b",
    "abi": [
     {
      "anonymous": false,
