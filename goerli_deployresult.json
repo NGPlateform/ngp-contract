@@ -166,13 +166,661 @@
     "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
    ]
   },
+  "Foundation": {
+   "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
+   "addr": "0x1c5e3cFF8Def2C39F244fc0daa442676D66c952A",
+   "abi": [
+    {
+     "inputs": [],
+     "stateMutability": "nonpayable",
+     "type": "constructor"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "address",
+       "name": "sender",
+       "type": "address"
+      },
+      {
+       "indexed": true,
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "Confirmation",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "address",
+       "name": "sender",
+       "type": "address"
+      },
+      {
+       "indexed": false,
+       "internalType": "uint256",
+       "name": "value",
+       "type": "uint256"
+      }
+     ],
+     "name": "Deposit",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "Execution",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "ExecutionFailure",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "address",
+       "name": "owner",
+       "type": "address"
+      }
+     ],
+     "name": "OwnerAddition",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "address",
+       "name": "owner",
+       "type": "address"
+      }
+     ],
+     "name": "OwnerRemoval",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": false,
+       "internalType": "address",
+       "name": "user",
+       "type": "address"
+      },
+      {
+       "indexed": false,
+       "internalType": "uint256",
+       "name": "amount",
+       "type": "uint256"
+      }
+     ],
+     "name": "Released",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": false,
+       "internalType": "uint256",
+       "name": "required",
+       "type": "uint256"
+      }
+     ],
+     "name": "RequirementChange",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "address",
+       "name": "sender",
+       "type": "address"
+      },
+      {
+       "indexed": true,
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "Revocation",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": true,
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "Submission",
+     "type": "event"
+    },
+    {
+     "stateMutability": "payable",
+     "type": "fallback"
+    },
+    {
+     "inputs": [],
+     "name": "MAX_OWNER_COUNT",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [],
+     "name": "_token",
+     "outputs": [
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "owner",
+       "type": "address"
+      }
+     ],
+     "name": "addOwner",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "_required",
+       "type": "uint256"
+      }
+     ],
+     "name": "changeRequirement",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "confirmTransaction",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      },
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "name": "confirmations",
+     "outputs": [
+      {
+       "internalType": "bool",
+       "name": "",
+       "type": "bool"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "executeTransaction",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "getConfirmationCount",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "count",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "getConfirmations",
+     "outputs": [
+      {
+       "internalType": "address[]",
+       "name": "_confirmations",
+       "type": "address[]"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [],
+     "name": "getOwners",
+     "outputs": [
+      {
+       "internalType": "address[]",
+       "name": "",
+       "type": "address[]"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "bool",
+       "name": "pending",
+       "type": "bool"
+      },
+      {
+       "internalType": "bool",
+       "name": "executed",
+       "type": "bool"
+      }
+     ],
+     "name": "getTransactionCount",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "count",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "from",
+       "type": "uint256"
+      },
+      {
+       "internalType": "uint256",
+       "name": "to",
+       "type": "uint256"
+      },
+      {
+       "internalType": "bool",
+       "name": "pending",
+       "type": "bool"
+      },
+      {
+       "internalType": "bool",
+       "name": "executed",
+       "type": "bool"
+      }
+     ],
+     "name": "getTransactionIds",
+     "outputs": [
+      {
+       "internalType": "uint256[]",
+       "name": "_transactionIds",
+       "type": "uint256[]"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address[]",
+       "name": "_owners",
+       "type": "address[]"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_required",
+       "type": "uint256"
+      },
+      {
+       "internalType": "address",
+       "name": "token",
+       "type": "address"
+      }
+     ],
+     "name": "initialize",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "isConfirmed",
+     "outputs": [
+      {
+       "internalType": "bool",
+       "name": "",
+       "type": "bool"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "name": "isOwner",
+     "outputs": [
+      {
+       "internalType": "bool",
+       "name": "",
+       "type": "bool"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "name": "owners",
+     "outputs": [
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "_beneficiary",
+       "type": "address"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_amount",
+       "type": "uint256"
+      }
+     ],
+     "name": "release",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "owner",
+       "type": "address"
+      }
+     ],
+     "name": "removeOwner",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "owner",
+       "type": "address"
+      },
+      {
+       "internalType": "address",
+       "name": "newOwner",
+       "type": "address"
+      }
+     ],
+     "name": "replaceOwner",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [],
+     "name": "required",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "name": "revokeConfirmation",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "destination",
+       "type": "address"
+      },
+      {
+       "internalType": "uint256",
+       "name": "value",
+       "type": "uint256"
+      },
+      {
+       "internalType": "bytes",
+       "name": "data",
+       "type": "bytes"
+      }
+     ],
+     "name": "submitTransaction",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "transactionId",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [],
+     "name": "transactionCount",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "name": "transactions",
+     "outputs": [
+      {
+       "internalType": "address",
+       "name": "destination",
+       "type": "address"
+      },
+      {
+       "internalType": "uint256",
+       "name": "value",
+       "type": "uint256"
+      },
+      {
+       "internalType": "bytes",
+       "name": "data",
+       "type": "bytes"
+      },
+      {
+       "internalType": "bool",
+       "name": "executed",
+       "type": "bool"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "stateMutability": "payable",
+     "type": "receive"
+    }
+   ],
+   "func": [
+    "constructor()",
+    "event Confirmation(address indexed sender, uint256 indexed transactionId)",
+    "event Deposit(address indexed sender, uint256 value)",
+    "event Execution(uint256 indexed transactionId)",
+    "event ExecutionFailure(uint256 indexed transactionId)",
+    "event OwnerAddition(address indexed owner)",
+    "event OwnerRemoval(address indexed owner)",
+    "event Released(address user, uint256 amount)",
+    "event RequirementChange(uint256 required)",
+    "event Revocation(address indexed sender, uint256 indexed transactionId)",
+    "event Submission(uint256 indexed transactionId)",
+    "function MAX_OWNER_COUNT() view returns (uint256)",
+    "function _token() view returns (address)",
+    "function addOwner(address owner)",
+    "function changeRequirement(uint256 _required)",
+    "function confirmTransaction(uint256 transactionId)",
+    "function confirmations(uint256, address) view returns (bool)",
+    "function executeTransaction(uint256 transactionId)",
+    "function getConfirmationCount(uint256 transactionId) view returns (uint256 count)",
+    "function getConfirmations(uint256 transactionId) view returns (address[] _confirmations)",
+    "function getOwners() view returns (address[])",
+    "function getTransactionCount(bool pending, bool executed) view returns (uint256 count)",
+    "function getTransactionIds(uint256 from, uint256 to, bool pending, bool executed) view returns (uint256[] _transactionIds)",
+    "function initialize(address[] _owners, uint256 _required, address token)",
+    "function isConfirmed(uint256 transactionId) view returns (bool)",
+    "function isOwner(address) view returns (bool)",
+    "function owners(uint256) view returns (address)",
+    "function release(address _beneficiary, uint256 _amount)",
+    "function removeOwner(address owner)",
+    "function replaceOwner(address owner, address newOwner)",
+    "function required() view returns (uint256)",
+    "function revokeConfirmation(uint256 transactionId)",
+    "function submitTransaction(address destination, uint256 value, bytes data) returns (uint256 transactionId)",
+    "function transactionCount() view returns (uint256)",
+    "function transactions(uint256) view returns (address destination, uint256 value, bytes data, bool executed)"
+   ]
+  },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-<<<<<<< HEAD
-   "addr": "0x7C02eec5e7A9220D8200D787A92E0C51490F8D3C",
-=======
-   "addr": "0x031a818403EfEDb1dd926E02c64a9a2c82Ae04E1",
->>>>>>> c7b3c3245ef717e70b40ef8ac2222a4717de0a81
+   "addr": "0x79b303dCB2fFD861e30114FFdEa8f65a92A969cA",
    "abi": [
     {
      "anonymous": false,
@@ -965,6 +1613,11 @@
        "internalType": "uint256",
        "name": "totalEarnValue",
        "type": "uint256"
+      },
+      {
+       "internalType": "uint256",
+       "name": "offEarthStake",
+       "type": "uint256"
       }
      ],
      "stateMutability": "view",
@@ -1471,7 +2124,7 @@
     "function getMeshData() view returns (uint256 userCounts, uint256 launchData, uint256 totalMinted, uint256 liquidSupply)",
     "function getNetworkEvents() view returns (uint256 _genesisTs, uint256[] _received, uint256[] _staked, uint256[] _unstaked)",
     "function getSpendNonce() view returns (uint256)",
-    "function getStakeInfo(address _user) view returns (uint256 tvl, uint256 revenue, uint256 earned, uint256 claimable, uint256 totalApy, uint256 staked, uint256 totalEarnValue)",
+    "function getStakeInfo(address _user) view returns (uint256 tvl, uint256 revenue, uint256 earned, uint256 claimable, uint256 totalApy, uint256 staked, uint256 totalEarnValue, uint256 offEarthStake)",
     "function getStakeTime(address user) view returns (uint256 ts)",
     "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
     "function initialize(address[] _owners, uint256 _apy, address _foundationAddr)",
@@ -1495,819 +2148,6 @@
     "function validSignature(address _sender, uint8[] vs, bytes32[] rs, bytes32[] ss) view returns (bool)",
     "function withdraw()",
     "function withdrawAmount(address) view returns (uint256)"
-   ]
-  },
-  "Foundation": {
-   "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x1c5e3cFF8Def2C39F244fc0daa442676D66c952A",
-   "abi": [
-    {
-     "inputs": [],
-     "stateMutability": "nonpayable",
-     "type": "constructor"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "sender",
-       "type": "address"
-      },
-      {
-       "indexed": true,
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "Confirmation",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "sender",
-       "type": "address"
-      },
-      {
-       "indexed": false,
-       "internalType": "uint256",
-       "name": "value",
-       "type": "uint256"
-      }
-     ],
-     "name": "Deposit",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "Execution",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "ExecutionFailure",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "owner",
-       "type": "address"
-      }
-     ],
-     "name": "OwnerAddition",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "owner",
-       "type": "address"
-      }
-     ],
-     "name": "OwnerRemoval",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": false,
-       "internalType": "address",
-       "name": "user",
-       "type": "address"
-      },
-      {
-       "indexed": false,
-       "internalType": "uint256",
-       "name": "amount",
-       "type": "uint256"
-      }
-     ],
-     "name": "Released",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": false,
-       "internalType": "uint256",
-       "name": "required",
-       "type": "uint256"
-      }
-     ],
-     "name": "RequirementChange",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "sender",
-       "type": "address"
-      },
-      {
-       "indexed": true,
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "Revocation",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "Submission",
-     "type": "event"
-    },
-    {
-     "stateMutability": "payable",
-     "type": "fallback"
-    },
-    {
-     "inputs": [],
-     "name": "MAX_OWNER_COUNT",
-     "outputs": [
-      {
-       "internalType": "uint256",
-       "name": "",
-       "type": "uint256"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [],
-     "name": "_token",
-     "outputs": [
-      {
-       "internalType": "address",
-       "name": "",
-       "type": "address"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "owner",
-       "type": "address"
-      }
-     ],
-     "name": "addOwner",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "_required",
-       "type": "uint256"
-      }
-     ],
-     "name": "changeRequirement",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "confirmTransaction",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "",
-       "type": "uint256"
-      },
-      {
-       "internalType": "address",
-       "name": "",
-       "type": "address"
-      }
-     ],
-     "name": "confirmations",
-     "outputs": [
-      {
-       "internalType": "bool",
-       "name": "",
-       "type": "bool"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "executeTransaction",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "getConfirmationCount",
-     "outputs": [
-      {
-       "internalType": "uint256",
-       "name": "count",
-       "type": "uint256"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "getConfirmations",
-     "outputs": [
-      {
-       "internalType": "address[]",
-       "name": "_confirmations",
-       "type": "address[]"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [],
-     "name": "getOwners",
-     "outputs": [
-      {
-       "internalType": "address[]",
-       "name": "",
-       "type": "address[]"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "bool",
-       "name": "pending",
-       "type": "bool"
-      },
-      {
-       "internalType": "bool",
-       "name": "executed",
-       "type": "bool"
-      }
-     ],
-     "name": "getTransactionCount",
-     "outputs": [
-      {
-       "internalType": "uint256",
-       "name": "count",
-       "type": "uint256"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "from",
-       "type": "uint256"
-      },
-      {
-       "internalType": "uint256",
-       "name": "to",
-       "type": "uint256"
-      },
-      {
-       "internalType": "bool",
-       "name": "pending",
-       "type": "bool"
-      },
-      {
-       "internalType": "bool",
-       "name": "executed",
-       "type": "bool"
-      }
-     ],
-     "name": "getTransactionIds",
-     "outputs": [
-      {
-       "internalType": "uint256[]",
-       "name": "_transactionIds",
-       "type": "uint256[]"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address[]",
-       "name": "_owners",
-       "type": "address[]"
-      },
-      {
-       "internalType": "uint256",
-       "name": "_required",
-       "type": "uint256"
-      },
-      {
-       "internalType": "address",
-       "name": "token",
-       "type": "address"
-      }
-     ],
-     "name": "initialize",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "isConfirmed",
-     "outputs": [
-      {
-       "internalType": "bool",
-       "name": "",
-       "type": "bool"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "",
-       "type": "address"
-      }
-     ],
-     "name": "isOwner",
-     "outputs": [
-      {
-       "internalType": "bool",
-       "name": "",
-       "type": "bool"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "",
-       "type": "uint256"
-      }
-     ],
-     "name": "owners",
-     "outputs": [
-      {
-       "internalType": "address",
-       "name": "",
-       "type": "address"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "_beneficiary",
-       "type": "address"
-      },
-      {
-       "internalType": "uint256",
-       "name": "_amount",
-       "type": "uint256"
-      }
-     ],
-     "name": "release",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "owner",
-       "type": "address"
-      }
-     ],
-     "name": "removeOwner",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "owner",
-       "type": "address"
-      },
-      {
-       "internalType": "address",
-       "name": "newOwner",
-       "type": "address"
-      }
-     ],
-     "name": "replaceOwner",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [],
-     "name": "required",
-     "outputs": [
-      {
-       "internalType": "uint256",
-       "name": "",
-       "type": "uint256"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "name": "revokeConfirmation",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "destination",
-       "type": "address"
-      },
-      {
-       "internalType": "uint256",
-       "name": "value",
-       "type": "uint256"
-      },
-      {
-       "internalType": "bytes",
-       "name": "data",
-       "type": "bytes"
-      }
-     ],
-     "name": "submitTransaction",
-     "outputs": [
-      {
-       "internalType": "uint256",
-       "name": "transactionId",
-       "type": "uint256"
-      }
-     ],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [],
-     "name": "transactionCount",
-     "outputs": [
-      {
-       "internalType": "uint256",
-       "name": "",
-       "type": "uint256"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "uint256",
-       "name": "",
-       "type": "uint256"
-      }
-     ],
-     "name": "transactions",
-     "outputs": [
-      {
-       "internalType": "address",
-       "name": "destination",
-       "type": "address"
-      },
-      {
-       "internalType": "uint256",
-       "name": "value",
-       "type": "uint256"
-      },
-      {
-       "internalType": "bytes",
-       "name": "data",
-       "type": "bytes"
-      },
-      {
-       "internalType": "bool",
-       "name": "executed",
-       "type": "bool"
-      }
-     ],
-     "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "stateMutability": "payable",
-     "type": "receive"
-    }
-   ],
-   "func": [
-    "constructor()",
-    "event Confirmation(address indexed sender, uint256 indexed transactionId)",
-    "event Deposit(address indexed sender, uint256 value)",
-    "event Execution(uint256 indexed transactionId)",
-    "event ExecutionFailure(uint256 indexed transactionId)",
-    "event OwnerAddition(address indexed owner)",
-    "event OwnerRemoval(address indexed owner)",
-    "event Released(address user, uint256 amount)",
-    "event RequirementChange(uint256 required)",
-    "event Revocation(address indexed sender, uint256 indexed transactionId)",
-    "event Submission(uint256 indexed transactionId)",
-    "function MAX_OWNER_COUNT() view returns (uint256)",
-    "function _token() view returns (address)",
-    "function addOwner(address owner)",
-    "function changeRequirement(uint256 _required)",
-    "function confirmTransaction(uint256 transactionId)",
-    "function confirmations(uint256, address) view returns (bool)",
-    "function executeTransaction(uint256 transactionId)",
-    "function getConfirmationCount(uint256 transactionId) view returns (uint256 count)",
-    "function getConfirmations(uint256 transactionId) view returns (address[] _confirmations)",
-    "function getOwners() view returns (address[])",
-    "function getTransactionCount(bool pending, bool executed) view returns (uint256 count)",
-    "function getTransactionIds(uint256 from, uint256 to, bool pending, bool executed) view returns (uint256[] _transactionIds)",
-    "function initialize(address[] _owners, uint256 _required, address token)",
-    "function isConfirmed(uint256 transactionId) view returns (bool)",
-    "function isOwner(address) view returns (bool)",
-    "function owners(uint256) view returns (address)",
-    "function release(address _beneficiary, uint256 _amount)",
-    "function removeOwner(address owner)",
-    "function replaceOwner(address owner, address newOwner)",
-    "function required() view returns (uint256)",
-    "function revokeConfirmation(uint256 transactionId)",
-    "function submitTransaction(address destination, uint256 value, bytes data) returns (uint256 transactionId)",
-    "function transactionCount() view returns (uint256)",
-    "function transactions(uint256) view returns (address destination, uint256 value, bytes data, bool executed)"
-   ]
-  },
-  "NGPProxy": {
-   "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x2fAD18285F4192A130752030D07fA39f9923Ad16",
-   "abi": [
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "_logic",
-       "type": "address"
-      },
-      {
-       "internalType": "address",
-       "name": "admin_",
-       "type": "address"
-      },
-      {
-       "internalType": "bytes",
-       "name": "_data",
-       "type": "bytes"
-      }
-     ],
-     "stateMutability": "payable",
-     "type": "constructor"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": false,
-       "internalType": "address",
-       "name": "previousAdmin",
-       "type": "address"
-      },
-      {
-       "indexed": false,
-       "internalType": "address",
-       "name": "newAdmin",
-       "type": "address"
-      }
-     ],
-     "name": "AdminChanged",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "beacon",
-       "type": "address"
-      }
-     ],
-     "name": "BeaconUpgraded",
-     "type": "event"
-    },
-    {
-     "anonymous": false,
-     "inputs": [
-      {
-       "indexed": true,
-       "internalType": "address",
-       "name": "implementation",
-       "type": "address"
-      }
-     ],
-     "name": "Upgraded",
-     "type": "event"
-    },
-    {
-     "stateMutability": "payable",
-     "type": "fallback"
-    },
-    {
-     "inputs": [],
-     "name": "admin",
-     "outputs": [
-      {
-       "internalType": "address",
-       "name": "admin_",
-       "type": "address"
-      }
-     ],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "newAdmin",
-       "type": "address"
-      }
-     ],
-     "name": "changeAdmin",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [],
-     "name": "implementation",
-     "outputs": [
-      {
-       "internalType": "address",
-       "name": "implementation_",
-       "type": "address"
-      }
-     ],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "newImplementation",
-       "type": "address"
-      }
-     ],
-     "name": "upgradeTo",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "newImplementation",
-       "type": "address"
-      },
-      {
-       "internalType": "bytes",
-       "name": "data",
-       "type": "bytes"
-      }
-     ],
-     "name": "upgradeToAndCall",
-     "outputs": [],
-     "stateMutability": "payable",
-     "type": "function"
-    },
-    {
-     "stateMutability": "payable",
-     "type": "receive"
-    }
-   ],
-   "func": [
-    "constructor(address _logic, address admin_, bytes _data) payable",
-    "event AdminChanged(address previousAdmin, address newAdmin)",
-    "event BeaconUpgraded(address indexed beacon)",
-    "event Upgraded(address indexed implementation)",
-    "function admin() returns (address admin_)",
-    "function changeAdmin(address newAdmin)",
-    "function implementation() returns (address implementation_)",
-    "function upgradeTo(address newImplementation)",
-    "function upgradeToAndCall(address newImplementation, bytes data) payable"
    ]
   }
  }

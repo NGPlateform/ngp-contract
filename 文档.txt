@@ -1,0 +1,29 @@
+编译合约
+npx hardhat compile
+
+部署合约
+npx hardhat --network goerli xdeploy one NGP
+
+升级合约
+npx hardhat --network goerli xupgrade ProxyAdmin NGPProxy NGP
+
+
+第一次部署合约
+npx hardhat compile
+npx hardhat --network goerli xdeploy one NGP
+npx hardhat --network goerli xdeploy one ProxyAdmin
+npx hardhat --network goerli xdeploy one NGPProxy(修改一下NGPProxy里面参数)
+
+服务器启动go程序
+supervisorctl
+restart montor-server  
+
+monitor服务启动
+cross-env NODE_ENV=prd pm2 start pm2.conf.json
+pm2 restart monitor
+
+ngp-server服务启动
+cross-env NODE_ENV=prd pm2 start pm2.conf.json
+pm2 restart ngp_server
+
+
