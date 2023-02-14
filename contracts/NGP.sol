@@ -388,7 +388,7 @@ contract NGP is ERC20Upgradeable {
 
     function getEarthDashboard() view external returns (uint256 _totalSupply,uint256 liquidSupply,uint256 destruction,uint256 totalStaked,uint256 treasury,uint256 foundation) {
         _totalSupply = totalSupply();
-        liquidSupply = totalMinted - balanceOf(address(this));
+        liquidSupply = _totalSupply - balanceOf(address(this));
         destruction = destructions;
         totalStaked = totalNGPStaked;
         treasury = treasuryValue;
@@ -411,7 +411,7 @@ contract NGP is ERC20Upgradeable {
 
         totalEarnValue = stakeValues[_user];
         //当前质押锁定EARTH数量 / 已经累计铸造出来的EARTH总数量。
-        offEarthStake = totalNGPStaked /  ERC20Upgradeable(totalSupply).totalSupply();
+        offEarthStake = totalNGPStaked /  totalSupply();
     } 
 
     function mint(address user,uint256 amount) private {
