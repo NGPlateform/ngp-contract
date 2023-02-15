@@ -224,7 +224,9 @@ contract NGP is ERC20Upgradeable {
             }
 
             //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
-            _totalAmount +=  _value * (2 - 1/(2 ** (_day - 1)));
+            if(_day > 1) {
+                _totalAmount +=  _value * (2 - 1/(2 ** (_day - 1)));
+            }
 
             userMints[_user][_number].withdrawTs = block.timestamp;
 
