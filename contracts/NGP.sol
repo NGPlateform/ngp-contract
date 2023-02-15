@@ -417,7 +417,10 @@ contract NGP is ERC20Upgradeable {
 
         totalEarnValue = stakeValues[_user];
         //当前质押锁定EARTH数量 / 已经累计铸造出来的EARTH总数量。
-        offEarthStake = totalNGPStaked /  totalSupply();
+        uint256 totalSupply = totalSupply();
+        if(totalSupply !=0 ) {
+             offEarthStake = totalNGPStaked /  totalSupply;
+        }
     } 
 
     function mint(address user,uint256 amount) private {

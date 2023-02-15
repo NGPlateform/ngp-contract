@@ -820,7 +820,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x04d0120dfB9fF9af5aDD3E657F924f8Fc80f33E9",
+   "addr": "0x3193549D3a5FB34F4E7700C4cd4922293C85888D",
    "abi": [
     {
      "anonymous": false,
@@ -2152,7 +2152,7 @@
   },
   "NGPProxy": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x2fad18285f4192a130752030d07fa39f9923ad16",
+   "addr": "0x3EE8566625Ef5c87e6C4Dbd74874e00d819a03D5",
    "abi": [
     {
      "inputs": [
