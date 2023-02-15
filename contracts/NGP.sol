@@ -136,10 +136,11 @@ contract NGP is ERC20Upgradeable {
 
         uint256 _len = userApplys[_number].length;
         if( _len != 0) {
-            uint256 _amount = degreeHeats[_number] / 10;
+            uint256 _amount = degreeHeats[_number];
             destructions += _amount;
-
-            _burn(msg.sender, _amount);
+            if(_amount > 0){
+                _burn(msg.sender, _amount);
+            }
         }else{
             activeNumbers++;
         }
@@ -156,7 +157,10 @@ contract NGP is ERC20Upgradeable {
             uint256 _withAmount =  _day * 6667 / _len;
 
             //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
-            _withAmount =  _withAmount * (2 - 1/(2 ** (_day - 1)));
+            if(_day > 1) {
+                _withAmount =  _withAmount * (2 - 1/(2 ** (_day - 1)));
+            }
+           
             userMints[_user][_number].withdrawTs = block.timestamp;
 
             withdrawAmount[_user] += _withAmount;
@@ -166,8 +170,8 @@ contract NGP is ERC20Upgradeable {
 
         //平均收益值: 864,000 / 12,960,000,0 = 0.0006667
         uint256 _n = userApplys[_number].length;
-
-        uint256 _degreeHeats = 6667 * (106 ** _n / 100 ** _n);
+         
+        uint256 _degreeHeats = 6667 * 106 ** _n * 10 ** 11 / (100 ** _n);
 
         degreeHeats[_number]  = _degreeHeats;
 
