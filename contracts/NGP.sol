@@ -87,6 +87,14 @@ contract NGP is ERC20Upgradeable {
     //当日解锁NGP
     mapping(uint256 => uint256) public dayUnStaked;
 
+    mapping(address => uint256) public unWithdraws;
+
+    mapping(address => uint256) public userWithdraws;
+
+
+    mapping(uint256 => mapping(address=>uint256)) public totalWithDraws;
+    mapping(uint256 => mapping(address=>uint256)) public totalUnWithDraws;
+
     event ClaimMint(address user,string number,uint256 time);
 
     event ClaimMintReward(address user,string number,uint256 time);
@@ -96,6 +104,10 @@ contract NGP is ERC20Upgradeable {
     event Withdrawn(address indexed user, uint256 amount, uint256 reward);
 
     event DegreeHeats(string number,uint256 heat,uint256 len);
+
+    event UserWithDrawEvent(string number,uint256 amount);
+
+    event UserUnWithDrawEvent(string number,uint256 amount);
 
     modifier isOnlyOwner {
         require(isOwner[msg.sender],"not owner");
@@ -154,16 +166,27 @@ contract NGP is ERC20Upgradeable {
         for(uint256 i = 0;i < userApplys[_number].length;i++){
             address _user = userApplys[_number][i];
             uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
-            uint256 _withAmount =  _day * 6667 / _len;
-
+            uint256 _withAmount =  _day * 6667 * 10**11 / _len;
+            
             //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
             if(_day > 1) {
-                _withAmount =  _withAmount * (2 - 1/(2 ** (_day - 1)));
-            }
-           
-            userMints[_user][_number].withdrawTs = block.timestamp;
+                uint256 _withAmountValue =  _withAmount*2 - _withAmount/(2 ** (_day - 1));
 
-            withdrawAmount[_user] += _withAmount;
+                uint256 _UserUnWithDraw = _withAmount/(2 ** (_day - 1));
+
+                userMints[_user][_number].withdrawTs = block.timestamp;
+
+                unWithdraws[_user] += _UserUnWithDraw;
+
+                withdrawAmount[_user] += _withAmountValue;
+
+                totalWithDraws[_number][_user] += _withAmountValue;
+
+                totalUnWithDraws[_number][_user] += _UserUnWithDraw;
+
+                emit UserWithDrawEvent(_number,totalWithDraws[_number][_user]);
+                emit UserUnWithDrawEvent(_number,totalUnWithDraws[_number][_user]);
+            }
         }
 
         userApplys[_number].push(msg.sender);
@@ -201,6 +224,30 @@ contract NGP is ERC20Upgradeable {
         emit ClaimMint(msg.sender,_number,block.timestamp);
     }
 
+    function getRewardAmount(address _user,uint256 _amountA,uint256 _amountB) view external returns(uint256 _userTotalAmount,uint256 _userWithdraw,uint256 _userUnWithdraw) {
+        uint256 _totalAmount;
+        uint256 _unWithdraws;
+        for(uint256 i = 0;i < userNumbers[_user].length;i++){
+            string memory _number = userNumbers[_user][i];
+            uint256 _len = userApplys[_number].length;
+
+            uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
+
+            uint256 _value = _day * 6667 * 10 ** 11 /_len;
+
+            //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
+            if(_day > 1) {
+                _totalAmount +=  _value*2 - _value/(2 ** (_day - 1));
+
+                _unWithdraws +=  _value/(2 ** (_day - 1));
+            }
+        }
+
+        _userTotalAmount = userWithdraws[_user];
+        _userWithdraw = _amountA + withdrawAmount[_user] + _totalAmount;
+        _userUnWithdraw = _amountB + unWithDrawAmount[_user] + _unWithdraws;
+    } 
+
     //_amount:是线下计算的80%部分的奖励 + 2部分的奖励
     function claimMintReward(address _user,uint256 _amount,uint8[] memory vs, bytes32[] memory rs, bytes32[] memory ss) public isOnlyOwner  {
         require(validSignature(_user,vs, rs, ss), "invalid signatures");
@@ -217,7 +264,7 @@ contract NGP is ERC20Upgradeable {
 
             uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
 
-            uint256 _value = _day * 6667 /_len;
+            uint256 _value = _day * 6667 * 10 ** 11 /_len;
 
             if(_day >= 1) {
                 dayClaims[_today-1] += _value;
@@ -225,7 +272,7 @@ contract NGP is ERC20Upgradeable {
 
             //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
             if(_day > 1) {
-                _totalAmount +=  _value * (2 - 1/(2 ** (_day - 1)));
+                _totalAmount +=  _value*2 - _value/(2 ** (_day - 1));
             }
 
             userMints[_user][_number].withdrawTs = block.timestamp;
@@ -233,7 +280,7 @@ contract NGP is ERC20Upgradeable {
             emit ClaimMintReward(msg.sender,_number,block.timestamp);
         }
 
-        if(!dayClaimed[_today-1] && block.timestamp >= genesisTs + SECONDS_IN_DAY * 3) {
+        if( _today >= 2 && !dayClaimed[_today-1]&& block.timestamp >= genesisTs + SECONDS_IN_DAY * 3) {
             uint256 _tValue = ((6667 - dayClaims[_today-2]) + (129600000 - activeNumbers) * 6667) * 10 ** 11;
             treasuryValue += _tValue;
 
@@ -243,11 +290,12 @@ contract NGP is ERC20Upgradeable {
         }
 
         //10%部分
-        //_reward有个精度，10 ** 11,0.0006667个
-        uint256 _reward = (_totalAmount + withdrawAmount[_user]) * 10 /100 * 10 ** 11;
+        uint256 _reward = _totalAmount + withdrawAmount[_user];
 
         uint256 _unReward = (_totalAmount + withdrawAmount[_user]) * 90 /100;
         unWithDrawAmount[msg.sender] = _unReward;
+
+        userWithdraws[msg.sender] = _reward + _amount;
 
         mint(_user,_reward + _amount );
 

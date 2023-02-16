@@ -820,7 +820,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x3193549D3a5FB34F4E7700C4cd4922293C85888D",
+   "addr": "0xA358766b8E050bd6d8037109aAe444c24e784Da8",
    "abi": [
     {
      "anonymous": false,
@@ -1557,6 +1557,45 @@
      "type": "function"
     },
     {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "_user",
+       "type": "address"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_amountA",
+       "type": "uint256"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_amountB",
+       "type": "uint256"
+      }
+     ],
+     "name": "getRewardAmount",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "_userTotalAmount",
+       "type": "uint256"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_userWithdraw",
+       "type": "uint256"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_userUnWithdraw",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
      "inputs": [],
      "name": "getSpendNonce",
      "outputs": [
@@ -1911,6 +1950,25 @@
     {
      "inputs": [
       {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "name": "unWithdraws",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
        "internalType": "string",
        "name": "",
        "type": "string"
@@ -2028,6 +2086,25 @@
      "inputs": [
       {
        "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "name": "userWithdraws",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
        "name": "_sender",
        "type": "address"
       },
@@ -2123,6 +2200,7 @@
     "function getMeshDashboard() view returns (uint256 participants, uint256 totalclaimMints, uint256 claimedMesh, uint256 maxHeats, uint256 sinceGenesis)",
     "function getMeshData() view returns (uint256 userCounts, uint256 launchData, uint256 totalMinted, uint256 liquidSupply)",
     "function getNetworkEvents() view returns (uint256 _genesisTs, uint256[] _received, uint256[] _staked, uint256[] _unstaked)",
+    "function getRewardAmount(address _user, uint256 _amountA, uint256 _amountB) view returns (uint256 _userTotalAmount, uint256 _userWithdraw, uint256 _userUnWithdraw)",
     "function getSpendNonce() view returns (uint256)",
     "function getStakeInfo(address _user) view returns (uint256 tvl, uint256 revenue, uint256 earned, uint256 claimable, uint256 totalApy, uint256 staked, uint256 totalEarnValue, uint256 offEarthStake)",
     "function getStakeTime(address user) view returns (uint256 ts)",
@@ -2141,10 +2219,12 @@
     "function transferFrom(address from, address to, uint256 amount) returns (bool)",
     "function treasuryValue() view returns (uint256)",
     "function unWithDrawAmount(address) view returns (uint256)",
+    "function unWithdraws(address) view returns (uint256)",
     "function userApplys(string, uint256) view returns (address)",
     "function userMints(address, string) view returns (address user, string number, uint256 updateTs, uint256 withdrawTs)",
     "function userNumbers(address, uint256) view returns (string)",
     "function userStakes(address) view returns (uint256 term, uint256 maturityTs, uint256 amount)",
+    "function userWithdraws(address) view returns (uint256)",
     "function validSignature(address _sender, uint8[] vs, bytes32[] rs, bytes32[] ss) view returns (bool)",
     "function withdraw()",
     "function withdrawAmount(address) view returns (uint256)"
