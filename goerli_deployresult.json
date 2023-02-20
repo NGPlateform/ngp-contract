@@ -820,7 +820,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0xA358766b8E050bd6d8037109aAe444c24e784Da8",
+   "addr": "0x96F3f38F3bA3A7566325D58aa64526cF143B52aB",
    "abi": [
     {
      "anonymous": false,
@@ -983,6 +983,44 @@
       }
      ],
      "name": "Transfer",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": false,
+       "internalType": "string",
+       "name": "number",
+       "type": "string"
+      },
+      {
+       "indexed": false,
+       "internalType": "uint256",
+       "name": "amount",
+       "type": "uint256"
+      }
+     ],
+     "name": "UserUnWithDrawEvent",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": false,
+       "internalType": "string",
+       "name": "number",
+       "type": "string"
+      },
+      {
+       "indexed": false,
+       "internalType": "uint256",
+       "name": "amount",
+       "type": "uint256"
+      }
+     ],
+     "name": "UserWithDrawEvent",
      "type": "event"
     },
     {
@@ -1430,6 +1468,35 @@
      "type": "function"
     },
     {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "_user",
+       "type": "address"
+      },
+      {
+       "internalType": "string",
+       "name": "_number",
+       "type": "string"
+      }
+     ],
+     "name": "getClaimTsAmount",
+     "outputs": [
+      {
+       "internalType": "int256",
+       "name": "count",
+       "type": "int256"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_amount",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
      "inputs": [],
      "name": "getEarthDashboard",
      "outputs": [
@@ -1865,6 +1932,54 @@
     {
      "inputs": [
       {
+       "internalType": "string",
+       "name": "",
+       "type": "string"
+      },
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "name": "totalUnWithDraws",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "string",
+       "name": "",
+       "type": "string"
+      },
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      }
+     ],
+     "name": "totalWithDraws",
+     "outputs": [
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
        "internalType": "address",
        "name": "to",
        "type": "address"
@@ -2170,6 +2285,8 @@
     "event Initialized(uint8 version)",
     "event Staked(address indexed user, uint256 amount, uint256 term)",
     "event Transfer(address indexed from, address indexed to, uint256 value)",
+    "event UserUnWithDrawEvent(string number, uint256 amount)",
+    "event UserWithDrawEvent(string number, uint256 amount)",
     "event Withdrawn(address indexed user, uint256 amount, uint256 reward)",
     "function FoundationAddr() view returns (address)",
     "function MintGNP(address user, uint256 amount)",
@@ -2196,6 +2313,7 @@
     "function degreeHeats(string) view returns (uint256)",
     "function destructions() view returns (uint256)",
     "function genesisTs() view returns (uint256)",
+    "function getClaimTsAmount(address _user, string _number) view returns (int256 count, uint256 _amount)",
     "function getEarthDashboard() view returns (uint256 _totalSupply, uint256 liquidSupply, uint256 destruction, uint256 totalStaked, uint256 treasury, uint256 foundation)",
     "function getMeshDashboard() view returns (uint256 participants, uint256 totalclaimMints, uint256 claimedMesh, uint256 maxHeats, uint256 sinceGenesis)",
     "function getMeshData() view returns (uint256 userCounts, uint256 launchData, uint256 totalMinted, uint256 liquidSupply)",
@@ -2215,6 +2333,8 @@
     "function totalEarn() view returns (uint256)",
     "function totalNGPStaked() view returns (uint256)",
     "function totalSupply() view returns (uint256)",
+    "function totalUnWithDraws(string, address) view returns (uint256)",
+    "function totalWithDraws(string, address) view returns (uint256)",
     "function transfer(address to, uint256 amount) returns (bool)",
     "function transferFrom(address from, address to, uint256 amount) returns (bool)",
     "function treasuryValue() view returns (uint256)",

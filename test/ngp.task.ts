@@ -14,7 +14,7 @@ export module extNGP {
 
       let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
 
-      let tran = await contrat.claimMint("E11394N2252");
+      let tran = await contrat.claimMint("E11402N2255");
       let recipt: ContractReceipt = await tran.wait();
       logtools.loggreen("result = [");
       logtools.loggreen("     hash = " + recipt.transactionHash);
@@ -64,6 +64,9 @@ export module extNGP {
         let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
 
         amount = ethers.utils.parseEther(amount);
+
+        console.log("===========amount==========:", amount);
+
         let tran = await contrat.stake(amount, term);
         let recipt: ContractReceipt = await tran.wait();
         logtools.loggreen("result = [");
@@ -112,6 +115,57 @@ export module extNGP {
       }
     );
 
+    task("NGP:approve", "approve").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:approve]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      console.log("========contrat========:", contrat.address);
+
+      let tran = await contrat.approve(
+        contrat.address,
+        "100000000000000000000000000000000000000"
+      );
+
+      let recipt: ContractReceipt = await tran.wait();
+      logtools.loggreen("result = [");
+      logtools.loggreen("     hash = " + recipt.transactionHash);
+      logtools.loggreen("     status = " + recipt.status);
+      logtools.loggreen("]");
+      logtools.logcyan(
+        "矿工费" +
+          ethers.utils.formatUnits(
+            recipt.gasUsed.mul(5000000000),
+            BigNumber.from("18")
+          )
+      );
+    });
+
+    task("NGP:getBurnAmount", "getBurnAmount").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:getBurnAmount]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let getBurnAmount = await contrat.getBurnAmount("E11402N2255");
+      console.log("getBurnAmount:", getBurnAmount);
+    });
+    //706702000000000
+
+    task("NGP:allowance", "allowance").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:allowance]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let MeshData = await contrat.allowance(
+        "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
+        contrat.address
+      );
+      console.log("MeshData:", MeshData);
+    });
+
     task("NGP:getMeshData", "getMeshData").setAction(async ({}, _hre) => {
       logtools.logyellow("method == [NGP:getMeshData]");
       await ContractInfo.LoadFromFile(_hre);
@@ -145,6 +199,18 @@ export module extNGP {
         console.log("MeshData:", getEarthDashboard);
       }
     );
+
+    task("NGP:balanceOf", "balanceOf").setAction(async ({}, _hre) => {
+      logtools.logyellow("method == [NGP:balanceOf]");
+      await ContractInfo.LoadFromFile(_hre);
+
+      let contrat = await ContractInfo.getContractProxy("NGP", "NGPProxy");
+
+      let getEarthDashboard = await contrat.balanceOf(
+        "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83"
+      );
+      console.log("MeshData:", getEarthDashboard);
+    });
 
     task("NGP:getStakeTime", "getStakeTime")
       .addPositionalParam("user", "user")

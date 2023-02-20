@@ -92,8 +92,8 @@ contract NGP is ERC20Upgradeable {
     mapping(address => uint256) public userWithdraws;
 
 
-    mapping(uint256 => mapping(address=>uint256)) public totalWithDraws;
-    mapping(uint256 => mapping(address=>uint256)) public totalUnWithDraws;
+    mapping(string => mapping(address=>uint256)) public totalWithDraws;
+    mapping(string => mapping(address=>uint256)) public totalUnWithDraws;
 
     event ClaimMint(address user,string number,uint256 time);
 
@@ -169,24 +169,25 @@ contract NGP is ERC20Upgradeable {
             uint256 _withAmount =  _day * 6667 * 10**11 / _len;
             
             //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
+            uint256 _withAmountValue;
+            uint256 _UserUnWithDraw;
             if(_day > 1) {
-                uint256 _withAmountValue =  _withAmount*2 - _withAmount/(2 ** (_day - 1));
+                _UserUnWithDraw = _withAmount/(2 ** (_day - 1));
 
-                uint256 _UserUnWithDraw = _withAmount/(2 ** (_day - 1));
+                _withAmountValue =  _withAmount*2 - _UserUnWithDraw;
 
                 userMints[_user][_number].withdrawTs = block.timestamp;
 
                 unWithdraws[_user] += _UserUnWithDraw;
-
-                withdrawAmount[_user] += _withAmountValue;
-
-                totalWithDraws[_number][_user] += _withAmountValue;
-
-                totalUnWithDraws[_number][_user] += _UserUnWithDraw;
-
-                emit UserWithDrawEvent(_number,totalWithDraws[_number][_user]);
-                emit UserUnWithDrawEvent(_number,totalUnWithDraws[_number][_user]);
+            }else{
+                _withAmountValue =  _withAmount;
             }
+
+            withdrawAmount[_user] += _withAmountValue;
+
+            totalWithDraws[_number][_user] += _withAmountValue;
+
+            totalUnWithDraws[_number][_user] += _UserUnWithDraw;
         }
 
         userApplys[_number].push(msg.sender);
@@ -240,6 +241,8 @@ contract NGP is ERC20Upgradeable {
                 _totalAmount +=  _value*2 - _value/(2 ** (_day - 1));
 
                 _unWithdraws +=  _value/(2 ** (_day - 1));
+            }else{
+                _totalAmount +=  _value;
             }
         }
 
@@ -259,6 +262,7 @@ contract NGP is ERC20Upgradeable {
 
         //每天10%部分收益
         for(uint256 i = 0;i < userNumbers[_user].length;i++){
+            uint256 _UserUnWithDraw;
             string memory _number = userNumbers[_user][i];
             uint256 _len = userApplys[_number].length;
 
@@ -273,11 +277,24 @@ contract NGP is ERC20Upgradeable {
             //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
             if(_day > 1) {
                 _totalAmount +=  _value*2 - _value/(2 ** (_day - 1));
+                _UserUnWithDraw = _value/(2 ** (_day - 1));
+            }else{
+                _totalAmount += _value;
             }
+
+            totalWithDraws[_number][_user] += _totalAmount;
+
+            totalUnWithDraws[_number][_user] += _UserUnWithDraw;
 
             userMints[_user][_number].withdrawTs = block.timestamp;
 
             emit ClaimMintReward(msg.sender,_number,block.timestamp);
+
+            // uint256 _totalWithDraws = totalWithDraws[_number][_user];
+            // uint256 _totalUnWithDraws = totalUnWithDraws[_number][_user];
+
+            // emit UserWithDrawEvent(_number,_totalWithDraws);
+            // emit UserUnWithDrawEvent(_number,_totalUnWithDraws);
         }
 
         if( _today >= 2 && !dayClaimed[_today-1]&& block.timestamp >= genesisTs + SECONDS_IN_DAY * 3) {
@@ -309,7 +326,7 @@ contract NGP is ERC20Upgradeable {
         require(userStakes[msg.sender].amount == 0, "NGP: stake exists"); // 已经质押过了
 
         // burn staked NGP
-        _burn(msg.sender, amount);  // 烧掉一些 token 
+        transfer(address(this),amount);
         // create NGP Stake
         _createStake(amount, term);   // 创建质押数据  
 
@@ -504,4 +521,13 @@ contract NGP is ERC20Upgradeable {
 
         ts = userStakes[user].maturityTs;
     } 
+
+    function getClaimTsAmount(address _user,string calldata _number) view public returns(int256 count,uint256 _amount) {
+        if(userMints[_user][_number].withdrawTs != 0) {
+            count = -1;
+        }else{
+            count = int256(userApplys[_number].length);
+            _amount = degreeHeats[_number];    
+        }
+    }
 }
