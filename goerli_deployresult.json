@@ -820,7 +820,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x96F3f38F3bA3A7566325D58aa64526cF143B52aB",
+   "addr": "0xdcaBA1e4e9DD68D8a12694caEe2A72489C14A40b",
    "abi": [
     {
      "anonymous": false,
@@ -990,6 +990,19 @@
      "inputs": [
       {
        "indexed": false,
+       "internalType": "address",
+       "name": "user",
+       "type": "address"
+      }
+     ],
+     "name": "UserReceive",
+     "type": "event"
+    },
+    {
+     "anonymous": false,
+     "inputs": [
+      {
+       "indexed": false,
        "internalType": "string",
        "name": "number",
        "type": "string"
@@ -1081,6 +1094,13 @@
     },
     {
      "inputs": [],
+     "name": "Receive",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [],
      "name": "SECONDS_IN_DAY",
      "outputs": [
       {
@@ -1090,6 +1110,51 @@
       }
      ],
      "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [],
+     "name": "SetDayTime",
+     "outputs": [],
+     "stateMutability": "nonpayable",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address[]",
+       "name": "_users",
+       "type": "address[]"
+      },
+      {
+       "internalType": "uint256[]",
+       "name": "_withdrawAmounts",
+       "type": "uint256[]"
+      },
+      {
+       "internalType": "uint256",
+       "name": "_totalUnwithdrawAmounts",
+       "type": "uint256"
+      },
+      {
+       "internalType": "uint8[]",
+       "name": "vs",
+       "type": "uint8[]"
+      },
+      {
+       "internalType": "bytes32[]",
+       "name": "rs",
+       "type": "bytes32[]"
+      },
+      {
+       "internalType": "bytes32[]",
+       "name": "ss",
+       "type": "bytes32[]"
+      }
+     ],
+     "name": "SetUserReward",
+     "outputs": [],
+     "stateMutability": "nonpayable",
      "type": "function"
     },
     {
@@ -1232,39 +1297,6 @@
      "type": "function"
     },
     {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "_user",
-       "type": "address"
-      },
-      {
-       "internalType": "uint256",
-       "name": "_amount",
-       "type": "uint256"
-      },
-      {
-       "internalType": "uint8[]",
-       "name": "vs",
-       "type": "uint8[]"
-      },
-      {
-       "internalType": "bytes32[]",
-       "name": "rs",
-       "type": "bytes32[]"
-      },
-      {
-       "internalType": "bytes32[]",
-       "name": "ss",
-       "type": "bytes32[]"
-      }
-     ],
-     "name": "claimMintReward",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
      "inputs": [],
      "name": "claimMints",
      "outputs": [
@@ -1329,6 +1361,30 @@
        "internalType": "uint256",
        "name": "",
        "type": "uint256"
+      }
+     ],
+     "stateMutability": "view",
+     "type": "function"
+    },
+    {
+     "inputs": [
+      {
+       "internalType": "address",
+       "name": "",
+       "type": "address"
+      },
+      {
+       "internalType": "uint256",
+       "name": "",
+       "type": "uint256"
+      }
+     ],
+     "name": "dayReceivedAmount",
+     "outputs": [
+      {
+       "internalType": "bool",
+       "name": "",
+       "type": "bool"
       }
      ],
      "stateMutability": "view",
@@ -1629,16 +1685,6 @@
        "internalType": "address",
        "name": "_user",
        "type": "address"
-      },
-      {
-       "internalType": "uint256",
-       "name": "_amountA",
-       "type": "uint256"
-      },
-      {
-       "internalType": "uint256",
-       "name": "_amountB",
-       "type": "uint256"
       }
      ],
      "name": "getRewardAmount",
@@ -2285,12 +2331,16 @@
     "event Initialized(uint8 version)",
     "event Staked(address indexed user, uint256 amount, uint256 term)",
     "event Transfer(address indexed from, address indexed to, uint256 value)",
+    "event UserReceive(address user)",
     "event UserUnWithDrawEvent(string number, uint256 amount)",
     "event UserWithDrawEvent(string number, uint256 amount)",
     "event Withdrawn(address indexed user, uint256 amount, uint256 reward)",
     "function FoundationAddr() view returns (address)",
     "function MintGNP(address user, uint256 amount)",
+    "function Receive()",
     "function SECONDS_IN_DAY() view returns (uint256)",
+    "function SetDayTime()",
+    "function SetUserReward(address[] _users, uint256[] _withdrawAmounts, uint256 _totalUnwithdrawAmounts, uint8[] vs, bytes32[] rs, bytes32[] ss)",
     "function activeMinters() view returns (uint256)",
     "function activeNumbers() view returns (uint256)",
     "function activeStakes() view returns (uint256)",
@@ -2300,11 +2350,11 @@
     "function apy() view returns (uint256)",
     "function balanceOf(address account) view returns (uint256)",
     "function claimMint(string _number)",
-    "function claimMintReward(address _user, uint256 _amount, uint8[] vs, bytes32[] rs, bytes32[] ss)",
     "function claimMints() view returns (uint256)",
     "function dayClaimed(uint256) view returns (bool)",
     "function dayClaims(uint256) view returns (uint256)",
     "function dayReceived(uint256) view returns (uint256)",
+    "function dayReceivedAmount(address, uint256) view returns (bool)",
     "function dayStaked(uint256) view returns (uint256)",
     "function daySupply() view returns (uint256)",
     "function dayUnStaked(uint256) view returns (uint256)",
@@ -2318,7 +2368,7 @@
     "function getMeshDashboard() view returns (uint256 participants, uint256 totalclaimMints, uint256 claimedMesh, uint256 maxHeats, uint256 sinceGenesis)",
     "function getMeshData() view returns (uint256 userCounts, uint256 launchData, uint256 totalMinted, uint256 liquidSupply)",
     "function getNetworkEvents() view returns (uint256 _genesisTs, uint256[] _received, uint256[] _staked, uint256[] _unstaked)",
-    "function getRewardAmount(address _user, uint256 _amountA, uint256 _amountB) view returns (uint256 _userTotalAmount, uint256 _userWithdraw, uint256 _userUnWithdraw)",
+    "function getRewardAmount(address _user) view returns (uint256 _userTotalAmount, uint256 _userWithdraw, uint256 _userUnWithdraw)",
     "function getSpendNonce() view returns (uint256)",
     "function getStakeInfo(address _user) view returns (uint256 tvl, uint256 revenue, uint256 earned, uint256 claimable, uint256 totalApy, uint256 staked, uint256 totalEarnValue, uint256 offEarthStake)",
     "function getStakeTime(address user) view returns (uint256 ts)",
@@ -2352,7 +2402,7 @@
   },
   "NGPProxy": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x3EE8566625Ef5c87e6C4Dbd74874e00d819a03D5",
+   "addr": "0x96CA3775eEa020b71AFD1d1539D57914ABf827a6",
    "abi": [
     {
      "inputs": [

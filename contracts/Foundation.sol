@@ -9,6 +9,8 @@ contract Foundation  is MultiSigWallet{
 
     address private immutable owner;
 
+    bool private _initialize;
+
     event Released(address user,uint256 amount);
 
     constructor() {
@@ -17,14 +19,18 @@ contract Foundation  is MultiSigWallet{
 
     function initialize(
         address[] memory _owners,
-        uint256 _required,
         address token
     ) external {
         require(msg.sender == owner,"only owner");
+        require(!initialize,"already initialize");
+
+        uint256 _required = _owners.length/2;
 
         MultiSigWallet_initialize(_owners, _required);
 
        _token = token;
+
+       initialize = true;
     }
 
     function release(address _beneficiary,uint256 _amount) public onlyWallet {

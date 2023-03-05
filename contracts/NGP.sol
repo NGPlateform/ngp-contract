@@ -95,6 +95,8 @@ contract NGP is ERC20Upgradeable {
     mapping(string => mapping(address=>uint256)) public totalWithDraws;
     mapping(string => mapping(address=>uint256)) public totalUnWithDraws;
 
+    mapping(address=>mapping(uint256=>bool)) public dayReceivedAmount;
+
     event ClaimMint(address user,string number,uint256 time);
 
     event ClaimMintReward(address user,string number,uint256 time);
@@ -108,6 +110,8 @@ contract NGP is ERC20Upgradeable {
     event UserWithDrawEvent(string number,uint256 amount);
 
     event UserUnWithDrawEvent(string number,uint256 amount);
+
+    event UserReceive(address user);
 
     modifier isOnlyOwner {
         require(isOwner[msg.sender],"not owner");
@@ -138,9 +142,6 @@ contract NGP is ERC20Upgradeable {
         FoundationAddr = _foundationAddr;
     }
 
-    //进行NGP的mint,需要传入编号
-    //1. 同一个坐标范围，一个钱包地址只能绑定一次
-    //2. 如果用户申明的网格已被其它用户申明占领过的话，需要燃烧
     function claimMint(string memory _number) external {
         MintInfo memory mintInfo = userMints[msg.sender][_number];
 
@@ -148,7 +149,7 @@ contract NGP is ERC20Upgradeable {
 
         uint256 _len = userApplys[_number].length;
         if( _len != 0) {
-            uint256 _amount = degreeHeats[_number];
+            uint256 _amount = degreeHeats[_number]/10;
             destructions += _amount;
             if(_amount > 0){
                 _burn(msg.sender, _amount);
@@ -163,39 +164,14 @@ contract NGP is ERC20Upgradeable {
         mintInfo.withdrawTs = block.timestamp;
         userMints[msg.sender][_number] = mintInfo;
 
-        for(uint256 i = 0;i < userApplys[_number].length;i++){
-            address _user = userApplys[_number][i];
-            uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
-            uint256 _withAmount =  _day * 6667 * 10**11 / _len;
-            
-            //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
-            uint256 _withAmountValue;
-            uint256 _UserUnWithDraw;
-            if(_day > 1) {
-                _UserUnWithDraw = _withAmount/(2 ** (_day - 1));
-
-                _withAmountValue =  _withAmount*2 - _UserUnWithDraw;
-
-                userMints[_user][_number].withdrawTs = block.timestamp;
-
-                unWithdraws[_user] += _UserUnWithDraw;
-            }else{
-                _withAmountValue =  _withAmount;
-            }
-
-            withdrawAmount[_user] += _withAmountValue;
-
-            totalWithDraws[_number][_user] += _withAmountValue;
-
-            totalUnWithDraws[_number][_user] += _UserUnWithDraw;
-        }
-
         userApplys[_number].push(msg.sender);
 
         //平均收益值: 864,000 / 12,960,000,0 = 0.0006667
         uint256 _n = userApplys[_number].length;
          
         uint256 _degreeHeats = 6667 * 106 ** _n * 10 ** 11 / (100 ** _n);
+        //6667 * 106 ** _n * 10 ** 11 / (100 ** _n);
+        
 
         degreeHeats[_number]  = _degreeHeats;
 
@@ -213,110 +189,51 @@ contract NGP is ERC20Upgradeable {
             minters[msg.sender] = true;
         }
 
-        uint256 _today = block.timestamp / SECONDS_IN_DAY; 
-        if(!dayClaimed[_today-1] && block.timestamp >= genesisTs + SECONDS_IN_DAY * 3) {
-            treasuryValue += ((6667 - dayClaims[_today-2]) + (129600000 - activeNumbers) * 6667) * 10 ** 11;
-
-            dayClaimed[_today-1] = true;
-        }
-
         claimMints++;
 
         emit ClaimMint(msg.sender,_number,block.timestamp);
     }
 
-    function getRewardAmount(address _user,uint256 _amountA,uint256 _amountB) view external returns(uint256 _userTotalAmount,uint256 _userWithdraw,uint256 _userUnWithdraw) {
-        uint256 _totalAmount;
-        uint256 _unWithdraws;
-        for(uint256 i = 0;i < userNumbers[_user].length;i++){
-            string memory _number = userNumbers[_user][i];
-            uint256 _len = userApplys[_number].length;
-
-            uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
-
-            uint256 _value = _day * 6667 * 10 ** 11 /_len;
-
-            //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
-            if(_day > 1) {
-                _totalAmount +=  _value*2 - _value/(2 ** (_day - 1));
-
-                _unWithdraws +=  _value/(2 ** (_day - 1));
-            }else{
-                _totalAmount +=  _value;
-            }
-        }
-
-        _userTotalAmount = userWithdraws[_user];
-        _userWithdraw = _amountA + withdrawAmount[_user] + _totalAmount;
-        _userUnWithdraw = _amountB + unWithDrawAmount[_user] + _unWithdraws;
-    } 
-
-    //_amount:是线下计算的80%部分的奖励 + 2部分的奖励
-    function claimMintReward(address _user,uint256 _amount,uint8[] memory vs, bytes32[] memory rs, bytes32[] memory ss) public isOnlyOwner  {
-        require(validSignature(_user,vs, rs, ss), "invalid signatures");
+    function SetUserReward(address[] calldata _users,uint256[] calldata _withdrawAmounts,uint256 _totalUnwithdrawAmounts,uint8[] memory vs, bytes32[] memory rs, bytes32[] memory ss) public isOnlyOwner  {
+        require(validSignature(msg.sender,vs, rs, ss), "invalid signatures");
         spendNonce = spendNonce + 1;
 
-        uint256 _totalAmount = 0;
+        uint256 _len = _users.length;
 
-        uint256 _today = block.timestamp / SECONDS_IN_DAY; 
+        require(_len == _withdrawAmounts.length,"error length");
 
-        //每天10%部分收益
-        for(uint256 i = 0;i < userNumbers[_user].length;i++){
-            uint256 _UserUnWithDraw;
-            string memory _number = userNumbers[_user][i];
-            uint256 _len = userApplys[_number].length;
-
-            uint256 _day = (block.timestamp - userMints[_user][_number].withdrawTs) / SECONDS_IN_DAY;
-
-            uint256 _value = _day * 6667 * 10 ** 11 /_len;
-
-            if(_day >= 1) {
-                dayClaims[_today-1] += _value;
-            }
-
-            //用户当日的网格挖矿收益一直未被领取的话，将每过24小时衰减一次，每次衰减50%。
-            if(_day > 1) {
-                _totalAmount +=  _value*2 - _value/(2 ** (_day - 1));
-                _UserUnWithDraw = _value/(2 ** (_day - 1));
-            }else{
-                _totalAmount += _value;
-            }
-
-            totalWithDraws[_number][_user] += _totalAmount;
-
-            totalUnWithDraws[_number][_user] += _UserUnWithDraw;
-
-            userMints[_user][_number].withdrawTs = block.timestamp;
-
-            emit ClaimMintReward(msg.sender,_number,block.timestamp);
-
-            // uint256 _totalWithDraws = totalWithDraws[_number][_user];
-            // uint256 _totalUnWithDraws = totalUnWithDraws[_number][_user];
-
-            // emit UserWithDrawEvent(_number,_totalWithDraws);
-            // emit UserUnWithDrawEvent(_number,_totalUnWithDraws);
+        for(uint256 i = 0;i < _len;i++){
+            withdrawAmount[_users[i]] =  _withdrawAmounts[i];
         }
 
-        if( _today >= 2 && !dayClaimed[_today-1]&& block.timestamp >= genesisTs + SECONDS_IN_DAY * 3) {
-            uint256 _tValue = ((6667 - dayClaims[_today-2]) + (129600000 - activeNumbers) * 6667) * 10 ** 11;
-            treasuryValue += _tValue;
+        treasuryValue += _totalUnwithdrawAmounts;
 
-            mint(FoundationAddr, _tValue/5);
+         _mint(FoundationAddr, treasuryValue * 20 /100);
+        treasuryValue = treasuryValue * 80/100;
+    }
 
-            dayClaimed[_today-1] = true;
-        }
+    function getRewardAmount(address _user) view external returns(uint256 _userTotalAmount,uint256 _userWithdraw,uint256 _userUnWithdraw) {
+        _userTotalAmount = userWithdraws[_user];
+        _userWithdraw = withdrawAmount[_user];
+        _userUnWithdraw =  unWithDrawAmount[_user];
+    } 
 
-        //10%部分
-        uint256 _reward = _totalAmount + withdrawAmount[_user];
+    function Receive() public {
+        uint256 _amount = withdrawAmount[msg.sender];
 
-        uint256 _unReward = (_totalAmount + withdrawAmount[_user]) * 90 /100;
-        unWithDrawAmount[msg.sender] = _unReward;
+        require(_amount > 0,"amount > 0");
+        require(!dayReceivedAmount[msg.sender][block.timestamp/SECONDS_IN_DAY],"day receive");
 
-        userWithdraws[msg.sender] = _reward + _amount;
+        dayReceivedAmount[msg.sender][block.timestamp/SECONDS_IN_DAY] = true;
 
-        mint(_user,_reward + _amount );
+        _amount = _amount * 10 / 100;
 
-        withdrawAmount[_user] = 0;
+        userWithdraws[msg.sender] += _amount;
+
+        withdrawAmount[msg.sender] = 9 * _amount;
+
+        _mint(msg.sender, _amount);
+        emit UserReceive(msg.sender);
     }
 
     function stake(uint256 amount, uint256 term) external {
@@ -340,6 +257,7 @@ contract NGP is ERC20Upgradeable {
     function withdraw() external {
         StakeInfo memory userStake = userStakes[msg.sender];
         require(userStake.amount > 0, "NGP: no stake exists");
+        require(userStake.maturityTs <= block.timestamp,"maturityTs");
         // 计算质押奖励
         uint256 ngpReward = _calculateStakeReward(
             userStake.amount,
@@ -372,7 +290,7 @@ contract NGP is ERC20Upgradeable {
     ) private view returns (uint256) {
         if (block.timestamp > maturityTs) { 
             uint256 rate = apy * term;   // apy*天数*1000/365 
-            return (amount * rate) / 10000;   // 质押的数量 * rate / 100_000_000 
+            return (amount * rate) / 100;   // 质押的数量 * rate / 100_000_000 
         }
         return 0;
     }
@@ -467,10 +385,11 @@ contract NGP is ERC20Upgradeable {
     }
 
     function getStakeInfo(address _user) view external returns (uint256 tvl,uint256 revenue,uint256 earned,uint256 claimable,uint256 totalApy,uint256 staked,uint256 totalEarnValue,uint256 offEarthStake) {
-        tvl = totalNGPStaked * 1/5;
-        revenue = totalEarn * 1/5;
+        uint256 price = 0;
+        tvl = totalNGPStaked * price;
+        revenue = totalEarn * price;
         earned = totalEarn;
-        if(userStakes[_user].maturityTs >= block.timestamp) {
+        if(userStakes[_user].maturityTs <= block.timestamp) {
             claimable = userStakes[_user].amount;
         }else{
             claimable = 0;
@@ -484,7 +403,7 @@ contract NGP is ERC20Upgradeable {
         //当前质押锁定EARTH数量 / 已经累计铸造出来的EARTH总数量。
         uint256 totalSupply = totalSupply();
         if(totalSupply !=0 ) {
-             offEarthStake = totalNGPStaked /  totalSupply;
+             offEarthStake = totalNGPStaked * 1000000 /  totalSupply;
         }
     } 
 
@@ -510,10 +429,6 @@ contract NGP is ERC20Upgradeable {
         }
     }
 
-    function MintGNP(address user,uint256 amount) public {
-        _mint(user, amount);
-    }
-
     function getStakeTime(address user) view external returns(uint256 ts) {
         if(userStakes[user].amount == 0){
             ts = 0;
@@ -527,7 +442,7 @@ contract NGP is ERC20Upgradeable {
             count = -1;
         }else{
             count = int256(userApplys[_number].length);
-            _amount = degreeHeats[_number];    
+            _amount = degreeHeats[_number]/10;    
         }
     }
 }
