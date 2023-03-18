@@ -2,7 +2,7 @@
  "contracts": {
   "ProxyAdmin": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0xeB9a4997344359a083e8651edC1b04703C15Fd30",
+   "addr": "0x3A488Ac94B1B57Ea3121e5F53829f7aed7E2B4A6",
    "abi": [
     {
      "anonymous": false,
@@ -820,7 +820,7 @@
   },
   "NGP": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0xdcaBA1e4e9DD68D8a12694caEe2A72489C14A40b",
+   "addr": "0xb78E92a6301dCBA816E95E23bCad7EB0D4829921",
    "abi": [
     {
      "anonymous": false,
@@ -1075,24 +1075,6 @@
      "type": "function"
     },
     {
-     "inputs": [
-      {
-       "internalType": "address",
-       "name": "user",
-       "type": "address"
-      },
-      {
-       "internalType": "uint256",
-       "name": "amount",
-       "type": "uint256"
-      }
-     ],
-     "name": "MintGNP",
-     "outputs": [],
-     "stateMutability": "nonpayable",
-     "type": "function"
-    },
-    {
      "inputs": [],
      "name": "Receive",
      "outputs": [],
@@ -1110,13 +1092,6 @@
       }
      ],
      "stateMutability": "view",
-     "type": "function"
-    },
-    {
-     "inputs": [],
-     "name": "SetDayTime",
-     "outputs": [],
-     "stateMutability": "nonpayable",
      "type": "function"
     },
     {
@@ -2336,10 +2311,8 @@
     "event UserWithDrawEvent(string number, uint256 amount)",
     "event Withdrawn(address indexed user, uint256 amount, uint256 reward)",
     "function FoundationAddr() view returns (address)",
-    "function MintGNP(address user, uint256 amount)",
     "function Receive()",
     "function SECONDS_IN_DAY() view returns (uint256)",
-    "function SetDayTime()",
     "function SetUserReward(address[] _users, uint256[] _withdrawAmounts, uint256 _totalUnwithdrawAmounts, uint8[] vs, bytes32[] rs, bytes32[] ss)",
     "function activeMinters() view returns (uint256)",
     "function activeNumbers() view returns (uint256)",
@@ -2402,7 +2375,7 @@
   },
   "NGPProxy": {
    "deployer": "0x75bC9FBD1F907695A5ab823772F78981bE0BFC83",
-   "addr": "0x96CA3775eEa020b71AFD1d1539D57914ABf827a6",
+   "addr": "0x84C044e0554DC67b18bcA12202D1B340C51C2710",
    "abi": [
     {
      "inputs": [

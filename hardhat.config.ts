@@ -94,7 +94,7 @@ const config: HardhatConfig = {
       tags: ["staging"],
     },
     goerli: {
-      url: "https://endpoints.omniatech.io/v1/eth/goerli/public",
+      url: "https://eth-goerli.g.alchemy.com/v2/MuYCfm2woPaS-j4opSyasMdBsiGiWk0R",
       accounts: onlykeys,
       chainId: 5,
       live: true,
