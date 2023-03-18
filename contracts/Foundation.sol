@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.8;
 
+
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./MultiSigWallet.sol";
 
@@ -9,7 +10,7 @@ contract Foundation  is MultiSigWallet{
 
     address private immutable owner;
 
-    bool private _initialize;
+    bool private initialize;
 
     event Released(address user,uint256 amount);
 
