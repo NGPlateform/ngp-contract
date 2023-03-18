@@ -10,7 +10,7 @@ contract Foundation  is MultiSigWallet{
 
     address private immutable owner;
 
-    bool private initialize;
+    bool private _initialize;
 
     event Released(address user,uint256 amount);
 
@@ -23,7 +23,7 @@ contract Foundation  is MultiSigWallet{
         address token
     ) external {
         require(msg.sender == owner,"only owner");
-        require(!initialize,"already initialize");
+        require(!_initialize,"already initialize");
 
         uint256 _required = _owners.length/2;
 
@@ -31,7 +31,7 @@ contract Foundation  is MultiSigWallet{
 
        _token = token;
 
-       initialize = true;
+       _initialize = true;
     }
 
     function release(address _beneficiary,uint256 _amount) public onlyWallet {
