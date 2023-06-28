@@ -122,7 +122,7 @@ contract NGP is ERC20Upgradeable {
         uint256 _apy,
         address _foundationAddr
     ) external initializer {
-        __ERC20_init("TERA Token", "TERA");
+        __ERC20_init("EARTH Token", "EARTH");
         for (uint i = 0; i < _owners.length; i++) {
             //onwer should be distinct, and non-zero
             address _owner = _owners[i];
@@ -259,10 +259,10 @@ contract NGP is ERC20Upgradeable {
     }
 
     function stake(uint256 amount, uint256 term) external {
-        require(balanceOf(msg.sender) >= amount, "NGP: not enough balance");
-        require(amount > 0, "NGP: amount > 0");
-        require(term >= 1, "NGP: term >= 1");
-        require(userStakes[msg.sender].amount == 0, "NGP: stake exists"); // 已经质押过了
+        require(balanceOf(msg.sender) >= amount, "TERA: Not enough balance");
+        require(amount > 0, "TERA: amount > 0");
+        require(term >= 1, "TERA: term >= 1");
+        require(userStakes[msg.sender].amount == 0, "TERA: Stake exists"); // 已经质押过了
 
         // burn staked NGP
         transfer(address(this), amount);
@@ -278,7 +278,7 @@ contract NGP is ERC20Upgradeable {
 
     function withdraw() external {
         StakeInfo memory userStake = userStakes[msg.sender];
-        require(userStake.amount > 0, "NGP: no stake exists");
+        require(userStake.amount > 0, "TERA: no stake exists");
         require(userStake.maturityTs <= block.timestamp, "maturityTs");
         // 计算质押奖励
         uint256 ngpReward = _calculateStakeReward(
