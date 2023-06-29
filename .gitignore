@@ -4,7 +4,7 @@ coverage
 coverage.json
 typechain
 typechain-types
-
+local_privkeys.json
 # Hardhat files
 cache
 artifacts
